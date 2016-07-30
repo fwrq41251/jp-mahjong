@@ -11,7 +11,7 @@ class HandsTest {
 
   @Test
   def toHandsTest(): Unit = {
-    val raw = "2489m679p5789s37z";
+    val raw = "4298m679p5789s37z";
     println(HandsReader.toHands(raw))
   }
 

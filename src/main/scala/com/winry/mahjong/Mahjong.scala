@@ -5,7 +5,7 @@ import com.winry.mahjong.Types.Type
 /**
   * Created by congzhou on 7/29/2016.
   */
-class Mahjong(val typ: Type, val num: Int) {
+class Mahjong(val typ: Type, val num: Int) extends Ordered[Mahjong] {
 
   def canEqual(other: Any): Boolean = other.isInstanceOf[Mahjong]
 
@@ -24,4 +24,9 @@ class Mahjong(val typ: Type, val num: Int) {
 
 
   override def toString = s"Mahjong($typ, $num)"
+
+  override def compare(that: Mahjong): Int = {
+    if (this.typ == that.typ) this.num.compareTo(that.num)
+    else this.typ.compareTo(that.typ)
+  }
 }
