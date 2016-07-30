@@ -1,0 +1,12 @@
+apply plugin: 'scala'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.typesafe.akka:akka-actor_2.11:2.4.2'
+    testCompile 'junit:junit:4.12'
+}
+
