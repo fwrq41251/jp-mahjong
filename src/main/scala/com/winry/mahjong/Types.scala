@@ -5,26 +5,25 @@ package com.winry.mahjong
   */
 object Types {
 
-  def toType(abbr:String):Type = abbr match {
-    case "m"=> Wan
-    case "p"=> Pin
-    case "s"=> Sou
-    case "w"=> Wind
-    case "d"=> Dragon
+  def toType(abbr: Char): Type = abbr match {
+    case 'm' => Wan
+    case 'p' => Pin
+    case 's' => Sou
+    case 'z' => Word
   }
 
 
-  sealed abstract class Type(val abbr: String) {
+  sealed abstract class Type(val abbr: Char) {
+
+    override def toString = s"Type($abbr)"
   }
 
-  case object Wan extends Type("m")
+  case object Wan extends Type('m')
 
-  case object Pin extends Type("p")
+  case object Pin extends Type('p')
 
-  case object Sou extends Type("s")
+  case object Sou extends Type('s')
 
-  case object Wind extends Type("w")
-
-  case object Dragon extends Type("d")
+  case object Word extends Type('z')
 
 }

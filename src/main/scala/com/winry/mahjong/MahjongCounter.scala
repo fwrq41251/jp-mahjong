@@ -11,7 +11,7 @@ class MahjongCounter(var mahjongs: List[Mahjong]) {
 
   def countDistance: Int = {
     val distance = 8
-    distance - (countChows - countPons) * 2 - countEyes - countRides
+    distance - (countChows + countPons) * 2 - countEyes - countRides
   }
 
   private def count(size: Int, predicate: => Boolean): Int = {
