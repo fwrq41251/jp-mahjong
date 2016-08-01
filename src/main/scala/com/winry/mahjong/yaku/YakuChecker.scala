@@ -3,23 +3,34 @@ package com.winry.mahjong.yaku
 /**
   * Created by congzhou on 8/1/2016.
   */
-sealed abstract class YakuChecker(val next: YakuChecker) {
+sealed abstract class YakuChecker {
 
+  val next: YakuChecker
   def check(hands: WinHands): Unit
 }
 
-class ReachChecker(override val next: YakuChecker) extends YakuChecker(next) {
+/**
+  * 立直
+  */
+class ReachChecker extends YakuChecker {
 
   override def check(hands: WinHands): Unit = {
     if (hands.isReach) hands.increaseBy(1)
     next.check(hands)
   }
+
+  override val next: YakuChecker = ???
 }
 
-class PinfuChecker(override val next: YakuChecker) extends YakuChecker(next) {
+/**
+  * 平和
+  */
+class PinfuChecker extends YakuChecker {
 
   override def check(hands: WinHands): Unit = {
-    if (hands.chows.size == 4 && hands.eyes(0).isNoValue) hands.increaseBy(1)
+    if (hands.chows.size == 4 && hands.eye.isNoValue) hands.increaseBy(1)
     next.check(hands)
   }
+
+  override val next: YakuChecker = ???
 }

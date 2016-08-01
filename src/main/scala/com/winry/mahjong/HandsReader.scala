@@ -8,20 +8,14 @@ import scala.collection.mutable.ListBuffer
 object HandsReader {
 
   def toHands(raw: String): Hands = {
-    //fixme this should be refined later,if types are in different order,this will not work
     var temp = raw
     val listBuffer = ListBuffer.empty[Mahjong]
-    val splitter = List('m', 'p', 's', 'z')
-    for (split <- splitter) {
-      val index = temp.indexOf(split)
-      if (index != -1) {
-        for (num <- temp.substring(0, index)) {
-          listBuffer += new Mahjong(Types.toType(split), num.asDigit)
-        }
-        temp = temp.drop(index + 1)
-      }
+    for (ch <- temp; if ch.isLetter) {
+      val index = temp.indexOf(ch)
+      for (digit <- temp.take(index)) listBuffer += new Mahjong(Types.toType(ch), digit.asDigit)
+      temp = temp.drop(index + 1)
     }
-    if(listBuffer.size != 13) throw new IllegalArgumentException("hands must be of 13 mahjongs")
+    if (listBuffer.size != 13) throw new IllegalArgumentException("hands must be of 13 mahjongs")
     new Hands(listBuffer.toList.sorted)
   }
 }

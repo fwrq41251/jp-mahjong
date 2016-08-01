@@ -9,5 +9,9 @@ class Eye(val pon: List[Mahjong]) extends PairChecker {
 
   checkPair(pon)
 
+  /**
+    * 是否客风
+    * @return
+    */
   def isNoValue: Boolean = true
 }

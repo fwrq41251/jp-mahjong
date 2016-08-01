@@ -13,9 +13,7 @@ class Mahjong(val typ: Type, val num: Int) extends Ordered[Mahjong] {
 
   override def equals(other: Any): Boolean = other match {
     case that: Mahjong =>
-      (that canEqual this) &&
-        typ == that.typ &&
-        num == that.num
+      (that canEqual this) && typ == that.typ && num == that.num
     case _ => false
   }
 

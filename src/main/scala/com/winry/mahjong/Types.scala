@@ -10,6 +10,7 @@ object Types {
     case 'p' => Pin
     case 's' => Sou
     case 'z' => Word
+    case _ => throw new IllegalArgumentException("unknown type:" + abbr)
   }
 
 

@@ -8,6 +8,6 @@ import com.winry.mahjong.Mahjong
 trait PairChecker {
 
   def checkPair(toCheck: List[Mahjong]): Unit = {
-    if (toCheck.size != 2) throw new IllegalArgumentException("chow must be a pair!")
+    if (toCheck.size != 2) throw new IllegalArgumentException("must be a pair!")
   }
 }

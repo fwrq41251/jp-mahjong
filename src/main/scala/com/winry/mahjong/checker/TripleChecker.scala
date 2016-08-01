@@ -8,6 +8,6 @@ import com.winry.mahjong.Mahjong
 trait TripleChecker {
 
   def checkTriple(toCheck: List[Mahjong]): Unit = {
-    if (toCheck.size != 3) throw new IllegalArgumentException("chow must be a triple!")
+    if (toCheck.size != 3) throw new IllegalArgumentException("must be a triple!")
   }
 }
