@@ -5,7 +5,7 @@ import com.winry.mahjong._
 /**
   * Created by congzhou on 8/1/2016.
   */
-class YakuHands(override var mahjongs: List[Mahjong]) extends Hands(mahjongs) {
+class WinHands(mahjongs0: List[Mahjong]) extends Hands(mahjongs0) {
 
   var count = 0
 

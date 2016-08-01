@@ -1,6 +1,6 @@
 package com.winry.mahjong.counter
 
-import com.winry.mahjong.Mahjong
+import com.winry.mahjong.{Mahjong, Types}
 import com.winry.mahjong.checker.{ChowChecker, PonChecker, RideChecker}
 
 /**
@@ -8,21 +8,23 @@ import com.winry.mahjong.checker.{ChowChecker, PonChecker, RideChecker}
   */
 class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonChecker with RideChecker {
 
-  var uncountMahjongs: List[Mahjong] = mahjongs
+  implicit def convert[Mahjong, CountMahjong <% Mahjong](l: List[CountMahjong]): List[Mahjong] = l map { a => a: Mahjong }
+
+  var countMahjongs: List[CountMahjong] = mahjongs.map(m => new CountMahjong(m)): List[CountMahjong]
 
   def countDistance: Int = {
     val distance = 8
     distance - (countChows + countPons) * 2 - countEyes - countRides
   }
 
-  private def count(size: Int, predicate: List[Mahjong] => Boolean): Int = {
-    var count: Int = 0
-    var temp = uncountMahjongs
+  private def count(size: Int, predicate: List[Mahjong] => Boolean, toCount: List[CountMahjong]): Int = {
+    var count = 0
+    var temp = toCount
     while (temp.size >= size) {
       val toCount = temp.take(size)
       if (predicate(toCount)) {
         count = count + 1
-        uncountMahjongs = removeSubList(uncountMahjongs, toCount)
+        toCount.foreach(m => m.isCount = true)
       }
       temp = temp.drop(1)
     }
@@ -30,24 +32,30 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
   }
 
   def countChows: Int = {
-    count(3, isChow)
+    count(3, isChow, countMahjongs.filter(m => m.typ != Types.Word).distinct)
   }
 
   def countPons: Int = {
-    count(3, isPon)
+    count(3, isPon, countMahjongs.filter(m => !m.isCount))
   }
 
   def countEyes: Int = {
-    count(2, isEye)
+    var count = 0
+    var temp = countMahjongs.filter(m => !m.isCount)
+    while (temp.size >= 2 && count == 0) {
+      val toCount = temp.take(2)
+      if (isEye(toCount)) {
+        count = 1
+        toCount.foreach(m => m.isCount = true)
+      }
+      temp = temp.drop(1)
+    }
+    count
   }
 
 
   def countRides: Int = {
-    count(2, isRide)
+    count(2, isRide, countMahjongs.filter(m => !m.isCount))
   }
 
-  def removeSubList[A](l: List[A], sublist: List[A]): List[A] = l.indexOfSlice(sublist) match {
-    case -1 => l
-    case index => removeSubList(l.patch(index, Nil, sublist.length), sublist)
-  }
 }

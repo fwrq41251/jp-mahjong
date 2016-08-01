@@ -5,14 +5,14 @@ import com.winry.mahjong.counter.DistanceCounter
 /**
   * Created by congzhou on 7/29/2016.
   */
-class Hands(var mahjongs: List[Mahjong]) {
-
-  var isTin: Boolean = false
-  var isReach: Boolean = false
+class Hands(mahjongs0: List[Mahjong]) {
+  var mahjongs = mahjongs0
+  var isTin = false
+  var isReach = false
 
   def push(toPush: Mahjong): Unit = {
     mahjongs = mahjongs ::: List(toPush)
-    mahjongs.sorted
+    mahjongs = mahjongs.sorted
   }
 
   def pop(toPop: Int): Unit = {

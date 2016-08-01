@@ -17,7 +17,7 @@ class HandsTest {
 
   @Test
   def getDistanceTest(): Unit = {
-    val raw = "345m666p55789s37z";
+    val raw = "345m666p78889s37z";
     println(HandsReader.toHands(raw).getDistance)
   }
 }
