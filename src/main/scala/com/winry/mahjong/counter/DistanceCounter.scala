@@ -6,7 +6,7 @@ import com.winry.mahjong.checker.{ChowChecker, PonChecker, RideChecker}
 /**
   * Created by congzhou on 7/29/2016.
   */
-class DistanceCounter(var mahjongs: List[Mahjong]) extends ChowChecker with PonChecker with RideChecker {
+class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonChecker with RideChecker {
 
   var uncountMahjongs: List[Mahjong] = mahjongs
 
