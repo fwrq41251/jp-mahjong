@@ -1,6 +1,6 @@
 package com.winry.mahjong.counter
 
-import com.winry.mahjong.{Mahjong, Types}
+import com.winry.mahjong._
 import com.winry.mahjong.checker.{ChowChecker, PonChecker, RideChecker}
 
 /**

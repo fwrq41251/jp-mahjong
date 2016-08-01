@@ -5,9 +5,9 @@ import com.winry.mahjong.checker.PairChecker
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Eye(val pon: List[Mahjong]) extends PairChecker {
+class Eye(val eye: List[Mahjong]) extends PairChecker {
 
-  checkPair(pon)
+  checkPair(eye)
 
   /**
     * 是否客风
