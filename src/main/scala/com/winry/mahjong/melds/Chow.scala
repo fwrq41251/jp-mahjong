@@ -1,5 +1,6 @@
-package com.winry.mahjong
+package com.winry.mahjong.melds
 
+import com.winry.mahjong.Mahjong
 import com.winry.mahjong.checker.Triples
 
 /**

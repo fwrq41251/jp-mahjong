@@ -1,6 +1,7 @@
-package com.winry.mahjong
+package com.winry.mahjong.melds
 
 import com.winry.mahjong.checker.Pairs
+import com.winry.mahjong.{Mahjong, Types}
 
 /**
   * Created by congzhou on 8/1/2016.

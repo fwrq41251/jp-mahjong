@@ -1,2 +1,2 @@
 # jp-mahjong
-play with jp-mahjong and scala.
+play with japanese mahjong and scala.

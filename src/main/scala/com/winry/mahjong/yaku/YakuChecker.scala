@@ -1,12 +1,22 @@
 package com.winry.mahjong.yaku
 
+import com.winry.mahjong.WinHands
+
 /**
   * Created by congzhou on 8/1/2016.
   */
 sealed abstract class YakuChecker {
 
+  def value: Int
+
   val next: YakuChecker
-  def check(hands: WinHands): Unit
+
+  def check(hands: WinHands): Unit = {
+    if (apply(hands)) hands.add(value)
+    next.check(hands)
+  }
+
+  def apply(hands: WinHands): Boolean
 }
 
 /**
@@ -14,12 +24,13 @@ sealed abstract class YakuChecker {
   */
 class ReachChecker extends YakuChecker {
 
-  override def check(hands: WinHands): Unit = {
-    if (hands.isReach) hands.add(1)
-    next.check(hands)
-  }
-
   override val next: YakuChecker = ???
+
+  override def value: Int = 1
+
+  override def apply(hands: WinHands): Boolean = {
+    hands.isReach
+  }
 }
 
 /**
@@ -27,10 +38,12 @@ class ReachChecker extends YakuChecker {
   */
 class PinfuChecker extends YakuChecker {
 
-  override def check(hands: WinHands): Unit = {
-    if (hands.chows.size == 4 && hands.eye.isNoValue) hands.add(1)
-    next.check(hands)
-  }
-
   override val next: YakuChecker = ???
+
+  override def value: Int = 1
+
+  override def apply(hands: WinHands): Boolean = {
+    hands.chows.size == 4 && hands.eye.isNoValue
+    //fixme 两面待检查
+  }
 }

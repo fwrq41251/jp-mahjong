@@ -7,5 +7,5 @@ import com.winry.mahjong.Mahjong
   */
 trait ConsecutiveChecker {
 
-  def isConsecutive(one: Mahjong, two: Mahjong): Boolean = one.typ == two.typ && one.num + 1 == two.num
+  def isConsecutive(toCheck: List[Mahjong]): Boolean = toCheck(0).typ == toCheck(1).typ && toCheck(0).num + 1 == toCheck(1).num
 }

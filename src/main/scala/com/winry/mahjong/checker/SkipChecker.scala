@@ -7,5 +7,5 @@ import com.winry.mahjong.Mahjong
   */
 trait SkipChecker {
 
-  def isSkip(one: Mahjong, two: Mahjong): Boolean = one.typ == two.typ && one.num + 2 == two.num
+  def isSkip(toCheck: List[Mahjong]): Boolean = toCheck(0).typ == toCheck(1).typ && toCheck(0).num + 2 == toCheck(1).num
 }

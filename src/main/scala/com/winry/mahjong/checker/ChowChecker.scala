@@ -9,7 +9,7 @@ trait ChowChecker extends Triples with SkipChecker {
 
   def isChow(toCheck: List[Mahjong]): Boolean = {
     checkTriple(toCheck)
-    isSkip(toCheck(0), toCheck(2))
+    isSkip(toCheck)
   }
 
 }

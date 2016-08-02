@@ -1,8 +1,8 @@
-package com.winry.mahjong.yaku
+package com.winry.mahjong
 
 import com.winry.mahjong.checker.{ChowChecker, PonChecker}
 import com.winry.mahjong.counter.CountMahjong
-import com.winry.mahjong.{Eye, Mahjong, _}
+import com.winry.mahjong.melds.{Chow, Eye, Pon}
 
 import scala.collection.mutable.ListBuffer
 
@@ -43,7 +43,7 @@ object WinHands extends ChowChecker with PonChecker {
     val toCount: List[CountMahjong] = hands.mahjongs.map(new CountMahjong(_))
     def chows:List[Chow] = {
       val result = getMelds(toCount.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct, isChow, Chow.apply)
-      if (result.size == 0) result else result ::: chows
+      if (result.isEmpty) result else result ::: chows
     }
     def pons = getMelds(toCount.filter(!_.isCount), isPon, Pon.apply)
     def eye = new Eye(toCount.filter(!_.isCount))

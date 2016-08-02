@@ -9,7 +9,7 @@ trait RideChecker extends Pairs with ConsecutiveChecker with EyeChecker with Ski
 
   def isRide(toCheck:List[Mahjong]): Boolean = {
     checkPair(toCheck)
-    isEye(toCheck) || isConsecutive(toCheck(0), toCheck(1)) || isSkip(toCheck(0), toCheck(1))
+    isEye(toCheck) || isConsecutive(toCheck) || isSkip(toCheck)
   }
 
 }
