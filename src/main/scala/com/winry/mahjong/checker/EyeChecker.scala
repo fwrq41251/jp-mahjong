@@ -5,7 +5,7 @@ import com.winry.mahjong.Mahjong
 /**
   * Created by cong on 2016/7/30.
   */
-trait EyeChecker extends PairChecker {
+trait EyeChecker extends Pairs {
 
   def isEye(toCheck:List[Mahjong]): Boolean = {
     checkPair(toCheck)

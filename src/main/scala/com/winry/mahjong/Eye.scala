@@ -1,11 +1,11 @@
 package com.winry.mahjong
 
-import com.winry.mahjong.checker.PairChecker
+import com.winry.mahjong.checker.Pairs
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Eye(val eye: List[Mahjong]) extends PairChecker {
+class Eye(val eye: List[Mahjong]) extends Pairs {
 
   checkPair(eye)
 

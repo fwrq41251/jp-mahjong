@@ -1,11 +1,11 @@
 package com.winry.mahjong
 
-import com.winry.mahjong.checker.TripleChecker
+import com.winry.mahjong.checker.Triples
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Pon(val pon: List[Mahjong]) extends TripleChecker {
+class Pon(val pon: List[Mahjong]) extends Triples {
 
   checkTriple(pon)
 
@@ -29,4 +29,9 @@ class Pon(val pon: List[Mahjong]) extends TripleChecker {
     case that: Pon => this.pon.head == that.pon.head
     case _ => false
   }
+}
+
+object Pon {
+
+  def apply(pon: List[Mahjong]): Pon = new Pon(pon)
 }

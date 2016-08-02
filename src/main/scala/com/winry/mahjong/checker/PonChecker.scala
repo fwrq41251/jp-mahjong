@@ -5,7 +5,7 @@ import com.winry.mahjong.Mahjong
 /**
   * Created by cong on 2016/7/30.
   */
-trait PonChecker extends TripleChecker {
+trait PonChecker extends Triples {
 
   def isPon(toCheck: List[Mahjong]): Boolean = {
     checkTriple(toCheck)

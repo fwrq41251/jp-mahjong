@@ -15,7 +15,7 @@ object HandsReader {
       for (digit <- temp.take(index)) listBuffer += new Mahjong(Types.toType(ch), digit.asDigit)
       temp = temp.drop(index + 1)
     }
-    if (listBuffer.size != 13) throw new IllegalArgumentException("hands must be of 13 mahjongs")
+    if (listBuffer.size < 13) throw new IllegalArgumentException("hands have at least 13 mahjongs")
     new Hands(listBuffer.toList.sorted)
   }
 }

@@ -8,9 +8,9 @@ import com.winry.mahjong.checker.{ChowChecker, PonChecker, RideChecker}
   */
 class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonChecker with RideChecker {
 
-  implicit def convert[Mahjong, CountMahjong <% Mahjong](l: List[CountMahjong]): List[Mahjong] = l map { a => a: Mahjong }
+  implicit def convert(l: List[CountMahjong]): List[Mahjong] = l map { a => a: Mahjong }
 
-  var countMahjongs: List[CountMahjong] = mahjongs.map(m => new CountMahjong(m)): List[CountMahjong]
+  var countMahjongs: List[CountMahjong] = mahjongs.map(new CountMahjong(_))
 
   def countDistance: Int = {
     val distance = 8
@@ -34,15 +34,12 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
   }
 
   def countChows: Int = {
-    val result = count(3, isChow, countMahjongs.filter(m => !m.isCount).filter(m => m.typ != Types.Word).distinct)
-    result match {
-      case 0 => result
-      case _ => result + countChows
-    }
+    val result = count(3, isChow, countMahjongs.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct)
+    if (result == 0) result else result + countChows
   }
 
   def countPons: Int = {
-    count(3, isPon, countMahjongs.filter(m => !m.isCount))
+    count(3, isPon, countMahjongs.filter(!_.isCount))
   }
 
   def countEyes: Int = {
@@ -50,11 +47,11 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
   }
 
   def countRides: Int = {
-    count(2, isRide, countMahjongs.filter(m => !m.isCount))
+    count(2, isRide, countMahjongs.filter(!_.isCount))
   }
 
   def hasEyes: Int = {
-    var temp = countMahjongs.filter(m => !m.isCount)
+    var temp = countMahjongs.filter(!_.isCount)
     while (temp.size >= 2) {
       val toCount = temp.take(2)
       if (isEye(toCount)) {

@@ -1,6 +1,7 @@
 package com.winry
 
 import com.winry.mahjong.HandsReader
+import com.winry.mahjong.yaku.WinHands
 import org.junit.Test
 
 
@@ -11,13 +12,19 @@ class HandsTest {
 
   @Test
   def toHandsTest(): Unit = {
-    val raw = "4298m679p5789s37z";
+    val raw = "4298m679p5789s37z"
     println(HandsReader.toHands(raw))
   }
 
   @Test
   def getDistanceTest(): Unit = {
-    val raw = "345m66p778899s37z";
+    val raw = "22221p778899s33z"
     println(HandsReader.toHands(raw).getDistance)
+  }
+
+  @Test
+  def toWinHandsTest(): Unit = {
+    val raw = "122223p778899s33z"
+    println(WinHands(HandsReader.toHands(raw)))
   }
 }
