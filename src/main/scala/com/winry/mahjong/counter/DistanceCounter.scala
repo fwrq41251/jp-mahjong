@@ -34,7 +34,11 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
   }
 
   def countChows: Int = {
-    count(3, isChow, countMahjongs.filter(m => m.typ != Types.Word).distinct)
+    val result = count(3, isChow, countMahjongs.filter(m => !m.isCount).filter(m => m.typ != Types.Word).distinct)
+    result match {
+      case 0 => result
+      case _ => result + countChows
+    }
   }
 
   def countPons: Int = {
@@ -42,11 +46,11 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
   }
 
   def countEyes: Int = {
-    count(2, isEye, countMahjongs.filter(m => !m.isCount))
+    count(2, isEye, countMahjongs)
   }
 
   def countRides: Int = {
-    count(2, isRide, countMahjongs)
+    count(2, isRide, countMahjongs.filter(m => !m.isCount))
   }
 
   def hasEyes: Int = {
