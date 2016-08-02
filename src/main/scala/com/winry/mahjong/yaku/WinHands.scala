@@ -40,7 +40,9 @@ class WinHands(var mahjongs: List[Mahjong]) extends ChowChecker with PonChecker 
 
   val eye: Eye = new Eye(mahjongs)
 
-  def increaseBy(value: Int): Unit = {
+  var isReach = false
+
+  def add(value: Int): Unit = {
     yakuCount += value
   }
 

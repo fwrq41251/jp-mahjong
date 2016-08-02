@@ -15,7 +15,7 @@ sealed abstract class YakuChecker {
 class ReachChecker extends YakuChecker {
 
   override def check(hands: WinHands): Unit = {
-    if (hands.isReach) hands.increaseBy(1)
+    if (hands.isReach) hands.add(1)
     next.check(hands)
   }
 
@@ -28,7 +28,7 @@ class ReachChecker extends YakuChecker {
 class PinfuChecker extends YakuChecker {
 
   override def check(hands: WinHands): Unit = {
-    if (hands.chows.size == 4 && hands.eye.isNoValue) hands.increaseBy(1)
+    if (hands.chows.size == 4 && hands.eye.isNoValue) hands.add(1)
     next.check(hands)
   }
 

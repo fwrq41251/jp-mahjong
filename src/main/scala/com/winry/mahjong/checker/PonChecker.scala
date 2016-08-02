@@ -9,6 +9,6 @@ trait PonChecker extends TripleChecker {
 
   def isPon(toCheck: List[Mahjong]): Boolean = {
     checkTriple(toCheck)
-    toCheck(0) == toCheck(1) && toCheck(1) == toCheck(2)
+    toCheck(0) == toCheck(2)
   }
 }

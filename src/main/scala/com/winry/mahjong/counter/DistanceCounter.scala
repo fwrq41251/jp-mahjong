@@ -14,7 +14,7 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
 
   def countDistance: Int = {
     val distance = 8
-    distance - (countChows + countPons) * 2 - countEyes - countRides
+    distance - (countChows + countPons) * 2 - hasEyes - countRides
   }
 
   private def count(size: Int, predicate: List[Mahjong] => Boolean, toCount: List[CountMahjong]): Int = {
@@ -23,10 +23,12 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
     while (temp.size >= size) {
       val toCount = temp.take(size)
       if (predicate(toCount)) {
-        count = count + 1
+        count += 1
         toCount.foreach(m => m.isCount = true)
+        temp = temp.drop(3)
+      } else {
+        temp = temp.tail
       }
-      temp = temp.drop(1)
     }
     count
   }
@@ -44,7 +46,21 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
   }
 
   def countRides: Int = {
-    if (count(2, isRide, countMahjongs.filter(m => !m.isCount)) > 0) 1 else 0
+    count(2, isRide, countMahjongs)
+  }
+
+  def hasEyes: Int = {
+    var temp = countMahjongs.filter(m => !m.isCount)
+    while (temp.size >= 2) {
+      val toCount = temp.take(2)
+      if (isEye(toCount)) {
+        toCount.foreach(m => m.isCount = true)
+        return 1
+      } else {
+        temp = temp.tail
+      }
+    }
+    0
   }
 
 }

@@ -5,11 +5,11 @@ import com.winry.mahjong.Mahjong
 /**
   * Created by cong on 2016/7/30.
   */
-trait ChowChecker extends TripleChecker with ConsecutiveChecker {
+trait ChowChecker extends TripleChecker with SkipChecker {
 
   def isChow(toCheck: List[Mahjong]): Boolean = {
     checkTriple(toCheck)
-    isConsecutive(toCheck(0), toCheck(1)) && isConsecutive(toCheck(1), toCheck(2))
+    isSkip(toCheck(0), toCheck(2))
   }
 
 }
