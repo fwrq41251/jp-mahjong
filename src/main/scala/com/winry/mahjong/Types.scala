@@ -14,11 +14,14 @@ object Types {
   }
 
 
-  sealed abstract class Type(val abbr: Char) extends Ordered[Type]{
+  sealed abstract class Type(val abbr: Char) extends Ordered[Type] {
 
     override def toString = s"Type($abbr)"
 
     override def compare(that: Type): Int = this.abbr.compareTo(that.abbr)
+
+    def isWord: Boolean = this == Word
+
   }
 
   case object Wan extends Type('m')

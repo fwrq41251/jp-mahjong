@@ -6,30 +6,34 @@ import com.winry.mahjong.{Mahjong, Types}
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Pon(val pon: List[Mahjong]) extends Triples {
+class Pon(pon: List[Mahjong]) extends Triples {
 
   checkTriple(pon)
 
   /**
     * 是否纯全
+    *
     * @return
     */
   def isJunTaiYao: Boolean = {
-    pon.head.num == 1 || pon.head.num == 9
+    !meld.head.typ.isWord && (meld.head.num == 1 || meld.head.num == 9)
   }
 
   /**
     * 是否带幺九
+    *
     * @return
     */
   def isTaiYao: Boolean = {
-    isJunTaiYao || pon.head.typ == Types.Word
+    isJunTaiYao || meld.head.typ == Types.Word
   }
 
   override def equals(that: scala.Any): Boolean = that match {
-    case that: Pon => this.pon.head == that.pon.head
+    case that: Pon => this.meld.head == that.meld.head
     case _ => false
   }
+
+  override val meld: List[Mahjong] = pon
 }
 
 object Pon {
