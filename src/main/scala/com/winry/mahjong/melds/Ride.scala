@@ -1,12 +1,12 @@
 package com.winry.mahjong.melds
 
 import com.winry.mahjong.Mahjong
-import com.winry.mahjong.checker.{ConsecutiveChecker, Pairs}
+import com.winry.mahjong.checker.{ConsecutiveChecker, Meld, Pairs}
 
 /**
   * Created by congzhou on 8/2/2016.
   */
-class Ride(ride: List[Mahjong]) extends Pairs with ConsecutiveChecker {
+class Ride(ride: List[Mahjong]) extends Meld with Pairs with ConsecutiveChecker {
 
   checkPair(ride)
 

@@ -1,12 +1,12 @@
 package com.winry.mahjong.melds
 
-import com.winry.mahjong.checker.Pairs
+import com.winry.mahjong.checker.{Meld, Pairs}
 import com.winry.mahjong.{Mahjong, Types}
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Eye(eye: List[Mahjong]) extends Pairs {
+class Eye(eye: List[Mahjong]) extends Meld with Pairs {
 
   checkPair(eye)
 

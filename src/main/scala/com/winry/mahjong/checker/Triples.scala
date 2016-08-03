@@ -5,7 +5,7 @@ import com.winry.mahjong.Mahjong
 /**
   * Created by cong on 2016/7/31.
   */
-trait Triples extends Meld {
+trait Triples {
 
   def checkTriple(toCheck: List[Mahjong]): Unit = {
     if (toCheck.size != 3) throw new IllegalArgumentException("must be a triple!")
