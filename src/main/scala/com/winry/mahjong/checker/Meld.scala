@@ -8,7 +8,9 @@ import com.winry.mahjong.Types.Type
   */
 trait Meld {
 
-  val meld :List[Mahjong]
+  val meld: List[Mahjong]
 
-  def typ :Type = meld.head.typ
+  def num: Int = meld.head.num
+
+  def typ: Type = meld.head.typ
 }

@@ -9,6 +9,7 @@ class Hands(mahjongs0: List[Mahjong]) {
   var mahjongs = mahjongs0
   var isTin = false
   var isReach = false
+  var isClosed = true
 
   def push(toPush: Mahjong): Unit = {
     mahjongs = mahjongs ::: List(toPush)
