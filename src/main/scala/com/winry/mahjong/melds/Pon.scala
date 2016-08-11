@@ -35,8 +35,3 @@ class Pon(pon: List[Mahjong]) extends Meld with Triples {
 
   override val meld: List[Mahjong] = pon
 }
-
-object Pon {
-
-  def apply(pon: List[Mahjong]): Pon = new Pon(pon)
-}

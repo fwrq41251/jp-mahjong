@@ -1,15 +1,15 @@
 package com.winry.mahjong
 
-import com.winry.mahjong.checker.{ChowChecker, PonChecker}
+import com.winry.mahjong.checker.{ChowChecker, PonChecker, RideChecker}
 import com.winry.mahjong.counter.CountMahjong
-import com.winry.mahjong.melds.{Chow, Eye, Pon}
+import com.winry.mahjong.melds.{Chow, Eye, Pon, Ride}
 
 import scala.collection.mutable.ListBuffer
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class WinHands(val chows: List[Chow], val pons: List[Pon], val eye: Eye, val isReach: Boolean) extends ChowChecker with PonChecker {
+class WinHands(val chows: List[Chow], val pons: List[Pon], val eye: Eye, val ride: Ride, val win: Mahjong, val isReach: Boolean) extends ChowChecker with PonChecker {
 
   var yakuCount = 0
 
@@ -19,7 +19,7 @@ class WinHands(val chows: List[Chow], val pons: List[Pon], val eye: Eye, val isR
 
 }
 
-object WinHands extends ChowChecker with PonChecker {
+object WinHands extends ChowChecker with PonChecker with RideChecker {
 
   implicit def convert(l: List[CountMahjong]): List[Mahjong] = l map { a => a: Mahjong }
 
@@ -39,16 +39,16 @@ object WinHands extends ChowChecker with PonChecker {
     buffer.toList
   }
 
-  def apply(hands: Hands): WinHands = {
+  def apply(hands: Hands, win: Mahjong): WinHands = {
     val toCount: List[CountMahjong] = hands.mahjongs.map(new CountMahjong(_))
-    def chows:List[Chow] = {
-      val result = getMelds(toCount.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct, isChow, Chow.apply)
+    def chows: List[Chow] = {
+      val result = getMelds(toCount.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct, isChow, new Chow(_))
       if (result.isEmpty) result else result ::: chows
     }
-    def pons = getMelds(toCount.filter(!_.isCount), isPon, Pon.apply)
+    def pons = getMelds(toCount.filter(!_.isCount), isPon, new Pon(_))
+    def ride = getMelds(toCount.filter(!_.isCount), isRide, new Ride(_))
     def eye = new Eye(toCount.filter(!_.isCount))
-    new WinHands(chows, pons, eye, hands.isReach)
+    new WinHands(chows, pons, eye, ride.head, win, hands.isReach)
   }
 }
-
 

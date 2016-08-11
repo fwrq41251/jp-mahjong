@@ -1,11 +1,12 @@
 package com.winry.mahjong.yaku
 
 import com.winry.mahjong.WinHands
+import com.winry.mahjong.checker.ConsecutiveChecker
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-sealed abstract class YakuChecker {
+sealed abstract class YakuChecker extends ConsecutiveChecker {
 
   def value: Int
 
@@ -43,7 +44,6 @@ class PinfuChecker extends YakuChecker {
   override def value: Int = 1
 
   override def apply(hands: WinHands): Boolean = {
-    hands.chows.size == 4 && hands.eye.isNoValue
-    //fixme 两面待检查
+    hands.chows.size == 3 && isConsecutive(hands.ride.meld) && hands.eye.isNoValue && hands.ride.isRyanmen
   }
 }

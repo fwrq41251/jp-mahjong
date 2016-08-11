@@ -26,8 +26,3 @@ class Chow(chow: List[Mahjong]) extends Meld with Triples {
 
   override val meld: List[Mahjong] = chow
 }
-
-object Chow {
-
-  def apply(chow: List[Mahjong]): Chow = new Chow(chow)
-}
