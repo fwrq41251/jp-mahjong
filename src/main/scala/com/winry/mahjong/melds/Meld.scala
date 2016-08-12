@@ -1,4 +1,4 @@
-package com.winry.mahjong.checker
+package com.winry.mahjong.melds
 
 import com.winry.mahjong.Mahjong
 import com.winry.mahjong.Types.Type
@@ -9,8 +9,6 @@ import com.winry.mahjong.Types.Type
 trait Meld {
 
   val meld: List[Mahjong]
-
-  def num: Int = meld.head.num
 
   def typ: Type = meld.head.typ
 }

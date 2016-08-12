@@ -1,12 +1,12 @@
 package com.winry.mahjong.melds
 
-import com.winry.mahjong.checker.{Meld, Triples}
+import com.winry.mahjong.checker.TriplesChecker
 import com.winry.mahjong.{Mahjong, Types}
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Pon(pon: List[Mahjong]) extends Meld with Triples {
+class Pon(pon: List[Mahjong]) extends Triple with TriplesChecker {
 
   checkTriple(pon)
 

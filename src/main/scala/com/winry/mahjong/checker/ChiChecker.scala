@@ -5,9 +5,9 @@ import com.winry.mahjong.Mahjong
 /**
   * Created by cong on 2016/7/30.
   */
-trait ChowChecker extends Triples with SkipChecker {
+trait ChiChecker extends TriplesChecker with SkipChecker {
 
-  def isChow(toCheck: List[Mahjong]): Boolean = {
+  def isChi(toCheck: List[Mahjong]): Boolean = {
     checkTriple(toCheck)
     isSkip(toCheck)
   }

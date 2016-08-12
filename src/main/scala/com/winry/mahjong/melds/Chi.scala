@@ -2,14 +2,14 @@ package com.winry.mahjong.melds
 
 import com.winry.mahjong.Mahjong
 import com.winry.mahjong.Types.Type
-import com.winry.mahjong.checker.{Meld, Triples}
+import com.winry.mahjong.checker.TriplesChecker
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Chow(chow: List[Mahjong]) extends Meld with Triples {
+class Chi(chi: List[Mahjong]) extends Triple with TriplesChecker {
 
-  checkTriple(chow)
+  checkTriple(chi)
 
   /**
     * 是否带幺九
@@ -21,16 +21,16 @@ class Chow(chow: List[Mahjong]) extends Meld with Triples {
   }
 
   override def equals(that: scala.Any): Boolean = that match {
-    case that: Chow => this.meld.head == that.meld.head
+    case that: Chi => this.meld.head == that.meld.head
     case _ => false
   }
 
-  override val meld: List[Mahjong] = chow
+  override val meld: List[Mahjong] = chi
 }
 
-object Chow {
+object Chi {
 
-  def apply(typ: Type, num: Int): Chow = {
-    new Chow(List(new Mahjong(typ, num)))
+  def apply(typ: Type, num: Int): Chi = {
+    new Chi(List(new Mahjong(typ, num)))
   }
 }

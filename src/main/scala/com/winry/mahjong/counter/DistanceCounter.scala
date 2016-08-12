@@ -1,12 +1,12 @@
 package com.winry.mahjong.counter
 
 import com.winry.mahjong._
-import com.winry.mahjong.checker.{ChowChecker, PonChecker, RideChecker}
+import com.winry.mahjong.checker.{ChiChecker, PonChecker, RideChecker}
 
 /**
   * Created by congzhou on 7/29/2016.
   */
-class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonChecker with RideChecker {
+class DistanceCounter(mahjongs: List[Mahjong]) extends ChiChecker with PonChecker with RideChecker {
 
   implicit def convert(l: List[CountMahjong]): List[Mahjong] = l map { a => a: Mahjong }
 
@@ -14,7 +14,7 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
 
   def countDistance: Int = {
     val distance = 8
-    distance - (countChows + countPons) * 2 - hasEyes - countRides
+    distance - (countChis + countPons) * 2 - hasEyes - countRides
   }
 
   private def count(size: Int, predicate: List[Mahjong] => Boolean, toCount: List[CountMahjong]): Int = {
@@ -33,9 +33,9 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChowChecker with PonCheck
     count
   }
 
-  def countChows: Int = {
-    val result = count(3, isChow, countMahjongs.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct)
-    if (result == 0) result else result + countChows
+  def countChis: Int = {
+    val result = count(3, isChi, countMahjongs.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct)
+    if (result == 0) result else result + countChis
   }
 
   def countPons: Int = {
