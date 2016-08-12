@@ -1,6 +1,7 @@
 package com.winry.mahjong.melds
 
 import com.winry.mahjong.Mahjong
+import com.winry.mahjong.Types.Type
 import com.winry.mahjong.checker.{Meld, Triples}
 
 /**
@@ -25,4 +26,11 @@ class Chow(chow: List[Mahjong]) extends Meld with Triples {
   }
 
   override val meld: List[Mahjong] = chow
+}
+
+object Chow {
+
+  def apply(typ: Type, num: Int): Chow = {
+    new Chow(List(new Mahjong(typ, num)))
+  }
 }

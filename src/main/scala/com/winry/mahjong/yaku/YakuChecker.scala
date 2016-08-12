@@ -4,8 +4,6 @@ import com.winry.mahjong.WinHands
 import com.winry.mahjong.checker.ConsecutiveChecker
 import com.winry.mahjong.melds.Chow
 
-import scala.collection.mutable
-
 /**
   * Created by congzhou on 8/1/2016.
   */
@@ -16,11 +14,11 @@ sealed abstract class YakuChecker extends ConsecutiveChecker {
   val next: YakuChecker
 
   def check(hands: WinHands): Unit = {
-    if (apply(hands)) hands.add(value)
+    if (satisfy(hands)) hands.add(value)
     next.check(hands)
   }
 
-  def apply(hands: WinHands): Boolean
+  def satisfy(hands: WinHands): Boolean
 }
 
 /**
@@ -32,7 +30,7 @@ class ReachChecker extends YakuChecker {
 
   override def value: Int = 1
 
-  override def apply(hands: WinHands): Boolean = {
+  override def satisfy(hands: WinHands): Boolean = {
     hands.isReach
   }
 }
@@ -46,7 +44,7 @@ class PinfuChecker extends YakuChecker {
 
   override def value: Int = 1
 
-  override def apply(hands: WinHands): Boolean = {
+  override def satisfy(hands: WinHands): Boolean = {
     hands.chows.size == 4 && hands.eye.isNoValue && hands.ride.isRyanmen
   }
 }
@@ -60,7 +58,7 @@ class IipeikouChecker extends YakuChecker {
 
   override val next: YakuChecker = _
 
-  override def apply(hands: WinHands): Boolean = {
+  override def satisfy(hands: WinHands): Boolean = {
     // convert chow list to set, if there is any duplicate element, set size will be small than list size.
     hands.chows.toSet.size != hands.chows.size
   }
@@ -71,26 +69,79 @@ class IipeikouChecker extends YakuChecker {
   *
   * @param isClosed
   */
-class SanshokuDoujunCheckr(isClosed: Boolean) extends YakuChecker {
+class SanshokuDoujunChecker(isClosed: Boolean) extends YakuChecker {
 
   override def value: Int = if (isClosed) 2 else 1
 
   override val next: YakuChecker = _
 
-  override def apply(hands: WinHands): Boolean = {
-    val temp = hands.chows
-    if (temp.size > 2) {
-      val map = temp.groupBy(c => c.typ)
+  override def satisfy(hands: WinHands): Boolean = {
+    val chows = hands.chows
+    if (chows.size >= 3) {
+      val map = chows.groupBy(_.typ)
       if (map.size == 3) {
-        if (temp.size == 3) {
-          temp(0).num == temp(1).num && temp(1).num == temp(2).num
+        if (chows.size == 3) {
+          chows.head.num == chows(1).num && chows(1).num == chows(2).num
         } else {
-          // temp.zie == 4
-
+          // chows.zie == 4
+          val single = map.values.filter(_.size == 1).toList
+          if (single.head == single(1)) map.values.filter(_.size > 1).toList.contains(single.head) else false
         }
-      } else {
-        false
-      }
+      } else false
     } else false
+  }
+
+}
+
+/**
+  * 一气通贯
+  *
+  * @param isClosed
+  */
+class IkkitsuukanChecker(isClosed: Boolean) extends YakuChecker {
+
+  override def value: Int = if (isClosed) 2 else 1
+
+  override val next: YakuChecker = _
+
+  override def satisfy(hands: WinHands): Boolean = {
+    val chows = hands.chows
+    if (chows.size >= 3) {
+      val map = chows.groupBy(_.typ)
+      if (map.values.exists(_.size >= 3)) {
+        val ikki = map.values.filter(_.size > 3).toList
+        val typ = ikki.head.head.typ
+        ikki.contains(Chow(typ, 1)) && ikki.contains(Chow(typ, 4)) && ikki.contains(Chow(typ, 7))
+      } else false
+    } else false
+  }
+}
+
+/**
+  * 两杯口
+  */
+class RyanpeikouChecker extends YakuChecker {
+
+  override def value: Int = 3
+
+  override val next: YakuChecker = _
+
+  override def satisfy(hands: WinHands): Boolean = {
+    val chows = hands.chows
+    chows.size == 4 && chows.toSet.size == 2
+  }
+}
+
+/**
+  * 对对和
+  */
+class ToitoihouChecker extends YakuChecker {
+
+  override def value: Int = 2
+
+  override val next: YakuChecker = _
+
+  override def satisfy(hands: WinHands): Boolean = {
+    hands.pons.size == 4
   }
 }
