@@ -21,6 +21,14 @@ sealed abstract class YakuChecker extends ConsecutiveChecker {
   def satisfy(hands: WinHands): Boolean
 }
 
+sealed abstract class CompoundYakuChecker extends YakuChecker {
+
+  override def check(hands: WinHands): Unit = {
+    if (satisfy(hands)) hands.add(value)
+    next.next.check(hands)
+  }
+}
+
 /**
   * 立直
   */
@@ -120,11 +128,11 @@ class IkkitsuukanChecker(isClosed: Boolean) extends YakuChecker {
 /**
   * 两杯口
   */
-class RyanpeikouChecker extends YakuChecker {
+class RyanpeikouChecker extends CompoundYakuChecker {
 
   override def value: Int = 3
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = new IipeikouChecker
 
   override def satisfy(hands: WinHands): Boolean = {
     val chis = hands.chis
@@ -170,4 +178,27 @@ class SanshokudoukouChecker extends YakuChecker {
       } else false
     } else false
   }
+}
+
+/**
+  * 断幺九
+  */
+class TanyaochuuChecker extends YakuChecker {
+
+  override def value: Int = 1
+
+  override val next: YakuChecker = _
+
+  override def satisfy(hands: WinHands): Boolean = {
+    hands.chis.forall(!_.isTaiYao) && hands.pons.forall(!_.isTaiYao) && !hands.eye.isTaiYao
+  }
+}
+
+class YakuhaiChecker extends YakuChecker {
+
+  override def value: Int = 1
+
+  override val next: YakuChecker = _
+
+  override def satisfy(hands: WinHands): Boolean = ???
 }

@@ -13,8 +13,7 @@ class DistanceCounter(mahjongs: List[Mahjong]) extends ChiChecker with PonChecke
   var countMahjongs: List[CountMahjong] = mahjongs.map(new CountMahjong(_))
 
   def countDistance: Int = {
-    val distance = 8
-    distance - (countChis + countPons) * 2 - hasEyes - countRides
+    Math.min(8 - (countChis + countPons) * 2 - hasEyes - countRides, 6 - countEyes)
   }
 
   private def count(size: Int, predicate: List[Mahjong] => Boolean, toCount: List[CountMahjong]): Int = {
