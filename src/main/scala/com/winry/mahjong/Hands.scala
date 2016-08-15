@@ -28,7 +28,19 @@ class Hands(mahjongs0: List[Mahjong]) {
     mahjongs = mahjongs.take(toDiscard) ++ mahjongs.drop(toDiscard + 1)
   }
 
+  def canChi(mahjong: Mahjong):Boolean = {
+    case mahjong(_, 1) => mahjongs.contains()
+    case mahjong(_, 2) => mahjongs.contains()
+    case mahjong(_, 8) => mahjongs.contains()
+    case mahjong(_, 9) => mahjongs.contains()
+    case _ => mahjongs.
+  }
+
   def chi(mahjong: Mahjong): Unit = {
+
+  }
+
+  def canPon(mahjong: Mahjong):Boolean = {
 
   }
 

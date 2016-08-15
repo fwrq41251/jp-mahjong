@@ -3,8 +3,8 @@ package com.winry.mahjong
 import com.winry.mahjong.Types.Type
 
 /**
-  * Created by congzhou on 7/29/2016.
-  */
+ * Created by congzhou on 7/29/2016.
+ */
 class Mahjong(val typ: Type, val num: Int) extends Ordered[Mahjong] {
 
   def this(mahjong: Mahjong) = this(mahjong.typ, mahjong.num)
@@ -29,4 +29,9 @@ class Mahjong(val typ: Type, val num: Int) extends Ordered[Mahjong] {
     if (this.typ == that.typ) this.num.compareTo(that.num)
     else this.typ.compareTo(that.typ)
   }
+}
+
+object Mahjong {
+
+  def apply(typ: Type, num: Int): Mahjong = new Mahjong(typ, num)
 }
