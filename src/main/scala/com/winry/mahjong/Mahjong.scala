@@ -3,9 +3,11 @@ package com.winry.mahjong
 import com.winry.mahjong.Types.Type
 
 /**
- * Created by congzhou on 7/29/2016.
- */
+  * Created by congzhou on 7/29/2016.
+  */
 class Mahjong(val typ: Type, val num: Int) extends Ordered[Mahjong] {
+
+  def apply(typ: Type, num: Int): Mahjong = new Mahjong(typ, num)
 
   def this(mahjong: Mahjong) = this(mahjong.typ, mahjong.num)
 
@@ -34,4 +36,8 @@ class Mahjong(val typ: Type, val num: Int) extends Ordered[Mahjong] {
 object Mahjong {
 
   def apply(typ: Type, num: Int): Mahjong = new Mahjong(typ, num)
+
+  def unapply(mahjong: Mahjong): Option[(Type, Int)] = {
+    Some(mahjong.typ, mahjong.num)
+  }
 }

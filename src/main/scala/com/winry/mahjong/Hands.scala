@@ -2,6 +2,7 @@ package com.winry.mahjong
 
 import com.winry.mahjong.counter.DistanceCounter
 import com.winry.mahjong.melds.{Chi, Pon}
+import com.winry.mahjong.util.ListUtil
 
 /**
   * Created by congzhou on 7/29/2016.
@@ -28,20 +29,28 @@ class Hands(mahjongs0: List[Mahjong]) {
     mahjongs = mahjongs.take(toDiscard) ++ mahjongs.drop(toDiscard + 1)
   }
 
-  def canChi(mahjong: Mahjong):Boolean = {
-    case mahjong(_, 1) => mahjongs.contains()
-    case mahjong(_, 2) => mahjongs.contains()
-    case mahjong(_, 8) => mahjongs.contains()
-    case mahjong(_, 9) => mahjongs.contains()
-    case _ => mahjongs.
+  def canChi(mahjong: Mahjong): Boolean = {
+    case Mahjong(typ, 1) => mahjongs.contains(Mahjong(typ, 2)) && mahjongs.contains(Mahjong(typ, 3))
+    case Mahjong(typ, 2) => (mahjongs.contains(Mahjong(typ, 1)) && mahjongs.contains(Mahjong(typ, 3))) ||
+      (mahjongs.contains(Mahjong(typ, 3)) && mahjongs.contains(Mahjong(typ, 4)))
+    case Mahjong(typ, 8) => (mahjongs.contains(Mahjong(typ, 7)) && mahjongs.contains(Mahjong(typ, 9))) ||
+      (mahjongs.contains(Mahjong(typ, 6)) && mahjongs.contains(Mahjong(typ, 7)))
+    case Mahjong(typ, 9) => mahjongs.contains(Mahjong(typ, 7)) && mahjongs.contains(Mahjong(typ, 8))
+    case Mahjong(typ, num) => (mahjongs.contains(Mahjong(typ, num - 2)) && mahjongs.contains(Mahjong(typ, num - 1))) ||
+      (mahjongs.contains(Mahjong(typ, num - 1)) && mahjongs.contains(Mahjong(typ, num + 1))) ||
+      (mahjongs.contains(Mahjong(typ, num + 1)) && mahjongs.contains(Mahjong(typ, num + 2)))
   }
 
   def chi(mahjong: Mahjong): Unit = {
 
   }
 
-  def canPon(mahjong: Mahjong):Boolean = {
-
+  def canPon(mahjong: Mahjong): Boolean = {
+    var temp = mahjongs
+    if (temp.contains(mahjong)) {
+      temp = ListUtil.removeSubList(temp, List(mahjong))
+      temp.contains(mahjong)
+    } else false
   }
 
   def pon(mahjong: Mahjong): Unit = {
