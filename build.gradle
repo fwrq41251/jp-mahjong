@@ -6,7 +6,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.scala-lang:scala-library:2.11.7',
+    compile 'org.scala-lang:scala-library:2.11.8',
             'com.google.guava:guava:19.0'
     testCompile 'junit:junit:4.12'
 }
