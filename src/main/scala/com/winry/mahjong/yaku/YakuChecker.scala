@@ -64,7 +64,7 @@ class IipeikouChecker extends YakuChecker {
 
   override def value: Int = 1
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = {
     // convert chi list to set, if there is any duplicate element, set size will be small than list size.
@@ -81,7 +81,7 @@ class SanshokuDoujunChecker(isClosed: Boolean) extends YakuChecker {
 
   override def value: Int = if (isClosed) 2 else 1
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = {
     val chis = hands.chis
@@ -91,7 +91,7 @@ class SanshokuDoujunChecker(isClosed: Boolean) extends YakuChecker {
         if (chis.size == 3) {
           chis.head.num == chis(1).num && chis(1).num == chis(2).num
         } else {
-          // chis.zie == 4
+          // chis.size == 4
           val single = map.values.filter(_.size == 1).toList
           if (single.head == single(1)) map.values.filter(_.size > 1).toList.contains(single.head) else false
         }
@@ -110,7 +110,7 @@ class IkkitsuukanChecker(isClosed: Boolean) extends YakuChecker {
 
   override def value: Int = if (isClosed) 2 else 1
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = {
     val chis = hands.chis
@@ -147,7 +147,7 @@ class ToitoihouChecker extends YakuChecker {
 
   override def value: Int = 2
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = {
     hands.pons.size == 4
@@ -161,7 +161,7 @@ class SanshokudoukouChecker extends YakuChecker {
 
   override def value: Int = ???
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = {
     val pons = hands.pons
@@ -171,7 +171,7 @@ class SanshokudoukouChecker extends YakuChecker {
         if (pons.size == 3) {
           pons.head.num == pons(1).num && pons(1).num == pons(2).num
         } else {
-          // pons.zie == 4
+          // pons.size == 4
           val single = map.values.filter(_.size == 1).toList
           if (single.head == single(1)) map.values.filter(_.size > 1).toList.contains(single.head) else false
         }
@@ -187,7 +187,7 @@ class TanyaochuuChecker extends YakuChecker {
 
   override def value: Int = 1
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = {
     hands.chis.forall(!_.isTaiYao) && hands.pons.forall(!_.isTaiYao) && !hands.eye.isTaiYao
@@ -198,7 +198,7 @@ class YakuhaiChecker extends YakuChecker {
 
   override def value: Int = 1
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = ???
 }

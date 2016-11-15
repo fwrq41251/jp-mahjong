@@ -11,6 +11,7 @@ class Hands(mahjongs0: List[Mahjong]) {
   var mahjongs = mahjongs0
   var isTen = false
   var isReach = false
+  //是否鸣牌
   var isClosed = true
   var chis: List[Chi] = Nil
   var pons: List[Pon] = Nil
@@ -30,13 +31,9 @@ class Hands(mahjongs0: List[Mahjong]) {
   }
 
   def canChi(mahjong: Mahjong): Boolean = {
-    case Mahjong(typ, 1) => mahjongs.contains(Mahjong(typ, 2)) && mahjongs.contains(Mahjong(typ, 3))
-    case Mahjong(typ, 2) => (mahjongs.contains(Mahjong(typ, 1)) && mahjongs.contains(Mahjong(typ, 3))) ||
-      (mahjongs.contains(Mahjong(typ, 3)) && mahjongs.contains(Mahjong(typ, 4)))
-    case Mahjong(typ, 8) => (mahjongs.contains(Mahjong(typ, 7)) && mahjongs.contains(Mahjong(typ, 9))) ||
-      (mahjongs.contains(Mahjong(typ, 6)) && mahjongs.contains(Mahjong(typ, 7)))
-    case Mahjong(typ, 9) => mahjongs.contains(Mahjong(typ, 7)) && mahjongs.contains(Mahjong(typ, 8))
-    case Mahjong(typ, num) => (mahjongs.contains(Mahjong(typ, num - 2)) && mahjongs.contains(Mahjong(typ, num - 1))) ||
+    val typ = mahjong.typ
+    val num = mahjong.num
+    (mahjongs.contains(Mahjong(typ, num - 2)) && mahjongs.contains(Mahjong(typ, num - 1))) ||
       (mahjongs.contains(Mahjong(typ, num - 1)) && mahjongs.contains(Mahjong(typ, num + 1))) ||
       (mahjongs.contains(Mahjong(typ, num + 1)) && mahjongs.contains(Mahjong(typ, num + 2)))
   }
@@ -46,11 +43,7 @@ class Hands(mahjongs0: List[Mahjong]) {
   }
 
   def canPon(mahjong: Mahjong): Boolean = {
-    var temp = mahjongs
-    if (temp.contains(mahjong)) {
-      temp = ListUtil.removeSubList(temp, List(mahjong))
-      temp.contains(mahjong)
-    } else false
+    mahjongs.count(_ == mahjong) >= 2
   }
 
   def pon(mahjong: Mahjong): Unit = {
