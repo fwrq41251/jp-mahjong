@@ -7,38 +7,47 @@ import com.winry.mahjong.melds.{Chi, Pon, Ride}
 /**
   * Created by congzhou on 8/1/2016.
   */
-sealed abstract class YakuChecker extends ConsecutiveChecker {
+sealed abstract class YakuChecker(hands: WinHands) extends ConsecutiveChecker {
 
   def value: Int
 
   val next: YakuChecker
 
-  def check(hands: WinHands): Unit = {
-    if (satisfy(hands)) hands.add(value)
-    next.check(hands)
+  def check(): Unit = {
+    if (satisfy()) hands.add(value)
+    next.check()
   }
 
-  def satisfy(hands: WinHands): Boolean
+  def satisfy(): Boolean
 }
 
-sealed abstract class CompoundYakuChecker extends YakuChecker {
+sealed abstract class CompoundYakuChecker(hands: WinHands) extends YakuChecker(hands) {
 
-  override def check(hands: WinHands): Unit = {
-    if (satisfy(hands)) hands.add(value)
-    next.next.check(hands)
+  override def check(): Unit = {
+    if (satisfy()) hands.add(value)
+    next.next.check()
   }
+}
+
+class MyChecker(hands: WinHands) extends YakuChecker(hands) {
+
+  override def value: Int = 0
+
+  override val next: YakuChecker = new ReachChecker(hands)
+
+  override def satisfy(): Boolean = false
 }
 
 /**
   * 立直
   */
-class ReachChecker extends YakuChecker {
+class ReachChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override val next: YakuChecker = ???
 
   override def value: Int = 1
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     hands.isReach
   }
 }
@@ -46,13 +55,13 @@ class ReachChecker extends YakuChecker {
 /**
   * 平和
   */
-class PinfuChecker extends YakuChecker {
+class PinfuChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override val next: YakuChecker = ???
 
   override def value: Int = 1
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     hands.isClosed && hands.chis.size == 4 && hands.eye.isNoValue && hands.ride.isRyanmen
   }
 }
@@ -60,13 +69,13 @@ class PinfuChecker extends YakuChecker {
 /**
   * 一杯口
   */
-class IipeikouChecker extends YakuChecker {
+class IipeikouChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override def value: Int = 1
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     // convert chi list to set, if there is any duplicate element, set size will be small than list size.
     hands.isClosed && hands.chis.toSet.size != hands.chis.size
   }
@@ -75,15 +84,14 @@ class IipeikouChecker extends YakuChecker {
 /**
   * 三色同顺
   *
-  * @param isClosed
   */
-class SanshokuDoujunChecker(isClosed: Boolean) extends YakuChecker {
+class SanshokuDoujunChecker(hands: WinHands) extends YakuChecker(hands) {
 
-  override def value: Int = if (isClosed) 2 else 1
+  override def value: Int = if (hands.isClosed) 2 else 1
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     val chis = hands.chis
     if (chis.size >= 3) {
       val map = chis.groupBy(_.typ)
@@ -104,15 +112,14 @@ class SanshokuDoujunChecker(isClosed: Boolean) extends YakuChecker {
 /**
   * 一气通贯
   *
-  * @param isClosed
   */
-class IkkitsuukanChecker(isClosed: Boolean) extends YakuChecker {
+class IkkitsuukanChecker(hands: WinHands) extends YakuChecker(hands) {
 
-  override def value: Int = if (isClosed) 2 else 1
+  override def value: Int = if (hands.isClosed) 2 else 1
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     val chis = hands.chis
     if (chis.size >= 3) {
       val map = chis.groupBy(_.typ)
@@ -128,13 +135,13 @@ class IkkitsuukanChecker(isClosed: Boolean) extends YakuChecker {
 /**
   * 两杯口
   */
-class RyanpeikouChecker extends CompoundYakuChecker {
+class RyanpeikouChecker(hands: WinHands) extends CompoundYakuChecker(hands) {
 
   override def value: Int = 3
 
-  override val next: YakuChecker = new IipeikouChecker
+  override val next: YakuChecker = new IipeikouChecker(hands)
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     val chis = hands.chis
     hands.isClosed && chis.size == 4 && chis.toSet.size == 2
   }
@@ -143,13 +150,13 @@ class RyanpeikouChecker extends CompoundYakuChecker {
 /**
   * 对对和
   */
-class ToitoihouChecker extends YakuChecker {
+class ToitoihouChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override def value: Int = 2
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     hands.pons.size == 4
   }
 }
@@ -157,13 +164,13 @@ class ToitoihouChecker extends YakuChecker {
 /**
   * 三色同刻
   */
-class SanshokudoukouChecker extends YakuChecker {
+class SanshokudoukouChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override def value: Int = ???
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     val pons = hands.pons
     if (pons.size >= 3) {
       val map = pons.groupBy(_.typ)
@@ -183,36 +190,36 @@ class SanshokudoukouChecker extends YakuChecker {
 /**
   * 断幺九
   */
-class TanyaochuuChecker extends YakuChecker {
+class TanyaochuuChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override def value: Int = 1
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     hands.chis.forall(!_.isTaiYao) && hands.pons.forall(!_.isTaiYao) && !hands.eye.isTaiYao
   }
 }
 
-class YakuhaiChecker extends YakuChecker {
+class YakuhaiChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override def value: Int = 1
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = ???
+  override def satisfy(): Boolean = ???
 }
 
 /**
   * 三暗刻
   */
-class SanankoChecker extends YakuChecker {
+class SanankoChecker(hands: WinHands) extends YakuChecker(hands) {
 
   override def value: Int = 2
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     hands.pons.count(_.isClosed) >= 3
   }
 }
@@ -220,15 +227,14 @@ class SanankoChecker extends YakuChecker {
 /**
   * 全带
   *
-  * @param isClosed
   */
-class ChantaiyaoChecker(isClosed: Boolean) extends YakuChecker with ChiChecker with PonChecker {
+class ChantaiyaoChecker(hands: WinHands) extends YakuChecker(hands) with ChiChecker with PonChecker {
 
-  override def value: Int = if (isClosed) 2 else 1
+  override def value: Int = if (hands.isClosed) 2 else 1
 
   override val next: YakuChecker = ???
 
-  override def satisfy(hands: WinHands): Boolean = {
+  override def satisfy(): Boolean = {
     def isTaiYao(ride: Ride, win: Mahjong): Boolean = {
       val meld = ride.meld
       if (meld.size == 1) {
@@ -237,7 +243,7 @@ class ChantaiyaoChecker(isClosed: Boolean) extends YakuChecker with ChiChecker w
         val list = meld ::: List(win)
         if (isChi(list)) {
           new Chi(list).isTaiYao
-        }else {
+        } else {
           new Pon(list).isTaiYao
         }
       }

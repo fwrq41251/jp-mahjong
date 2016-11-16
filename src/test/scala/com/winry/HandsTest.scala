@@ -1,6 +1,8 @@
 package com.winry
 
-import com.winry.mahjong.HandsReader
+import com.winry.mahjong.Types.Wan
+import com.winry.mahjong.{HandsReader, Mahjong, WinHands}
+import com.winry.mahjong.yaku.MyChecker
 import org.junit.Test
 
 
@@ -28,7 +30,10 @@ class HandsTest {
 
   @Test
   def yakuCountTest(): Unit = {
-    val raw = "22m222234p667788s"
+    val raw = "22m22234p667788s"
+    val hands = WinHands(HandsReader.toHands(raw), Mahjong(Wan, 2))
+    new MyChecker(hands).check()
+    println(hands.yakuCount)
   }
 
   @Test

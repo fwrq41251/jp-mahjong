@@ -9,7 +9,7 @@ trait ChiChecker extends TriplesChecker with SkipChecker {
 
   def isChi(toCheck: List[Mahjong]): Boolean = {
     checkTriple(toCheck)
-    isSkip(toCheck)
+    isSkip(List(toCheck.head, toCheck(2)))
   }
 
 }
