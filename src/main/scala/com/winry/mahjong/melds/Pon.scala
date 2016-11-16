@@ -6,7 +6,12 @@ import com.winry.mahjong.{Mahjong, Types}
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Pon(pon: List[Mahjong]) extends Triple with TriplesChecker {
+class Pon(pon: List[Mahjong]) extends Triple with TriplesChecker with Closed {
+
+  def this(chi: List[Mahjong], closed: Boolean) = {
+    this(chi)
+    isClosed = closed
+  }
 
   checkTriple(pon)
 

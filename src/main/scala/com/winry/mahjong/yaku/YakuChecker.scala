@@ -202,3 +202,17 @@ class YakuhaiChecker extends YakuChecker {
 
   override def satisfy(hands: WinHands): Boolean = ???
 }
+
+/**
+  * 三暗刻
+  */
+class SanankoChecker extends YakuChecker {
+
+  override def value: Int = 2
+
+  override val next: YakuChecker = _
+
+  override def satisfy(hands: WinHands): Boolean = {
+    hands.pons.count(_.isClosed) >= 3
+  }
+}

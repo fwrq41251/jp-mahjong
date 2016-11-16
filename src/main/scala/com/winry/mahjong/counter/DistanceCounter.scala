@@ -6,14 +6,19 @@ import com.winry.mahjong.checker.{ChiChecker, PonChecker, RideChecker}
 /**
   * Created by congzhou on 7/29/2016.
   */
-class DistanceCounter(mahjongs: List[Mahjong]) extends ChiChecker with PonChecker with RideChecker {
+class DistanceCounter(hands: Hands) extends ChiChecker with PonChecker with RideChecker {
 
   implicit def convert(l: List[CountMahjong]): List[Mahjong] = l map { a => a: Mahjong }
 
-  var countMahjongs: List[CountMahjong] = mahjongs.map(new CountMahjong(_))
+  var countMahjongs: List[CountMahjong] = hands.freeMahjongs.map(new CountMahjong(_))
 
   def countDistance: Int = {
-    Math.min(8 - (countChis + countPons) * 2 - hasEyes - countRides, 6 - countEyes)
+    if (hands.isClosed) {
+      Math.min(8 - (countChis + countPons) * 2 - hasEyes - countRides, 6 - countEyes)
+    }
+    else {
+      8 - (hands.chis.size + hands.pons.size + hands.kans.size + countChis + countPons) * 2 - hasEyes
+    }
   }
 
   private def count(size: Int, predicate: List[Mahjong] => Boolean, toCount: List[CountMahjong]): Int = {

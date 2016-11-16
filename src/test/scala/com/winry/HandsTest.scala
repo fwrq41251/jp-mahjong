@@ -1,7 +1,6 @@
 package com.winry
 
-import com.winry.mahjong.{HandsReader, WinHands}
-import com.winry.mahjong.counter.YakuCounter
+import com.winry.mahjong.HandsReader
 import org.junit.Test
 
 
@@ -25,13 +24,15 @@ class HandsTest {
   @Test
   def toWinHandsTest(): Unit = {
     val raw = "122223p778899s33z"
-    println(WinHands(HandsReader.toHands(raw)))
   }
 
   @Test
   def yakuCountTest(): Unit = {
     val raw = "22m222234p667788s"
-    val hands = WinHands(HandsReader.toHands(raw))
-    println(YakuCounter(hands))
+  }
+
+  @Test
+  def nilTest(): Unit = {
+    print(Nil.size)
   }
 }

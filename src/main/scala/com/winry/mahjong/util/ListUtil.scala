@@ -10,4 +10,8 @@ object ListUtil {
     case index => removeSubList(l.patch(index, Nil, sublist.length), sublist)
   }
 
+  def removeElement[A](l: List[A], e: A): List[A] = {
+    l diff List(e)
+  }
+
 }

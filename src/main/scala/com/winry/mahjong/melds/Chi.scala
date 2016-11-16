@@ -7,7 +7,12 @@ import com.winry.mahjong.checker.TriplesChecker
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Chi(chi: List[Mahjong]) extends Triple with TriplesChecker {
+class Chi(chi: List[Mahjong]) extends Triple with TriplesChecker with Closed {
+
+  def this(chi: List[Mahjong], closed: Boolean) = {
+    this(chi)
+    isClosed = closed
+  }
 
   checkTriple(chi)
 

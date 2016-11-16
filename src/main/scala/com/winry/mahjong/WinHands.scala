@@ -9,7 +9,8 @@ import scala.collection.mutable.ListBuffer
 /**
   * Created by congzhou on 8/1/2016.
   */
-class WinHands(val chis: List[Chi], val pons: List[Pon], val eye: Eye, val ride: Ride, val win: Mahjong, val isReach: Boolean, val isClosed:Boolean) extends ChiChecker with PonChecker {
+class WinHands(val chis: List[Chi], val pons: List[Pon], val eye: Eye, val ride: Ride, val win: Mahjong, val isReach:
+Boolean, val isClosed: Boolean) extends ChiChecker with PonChecker {
 
   var yakuCount = 0
 
@@ -57,15 +58,15 @@ object WinHands extends ChiChecker with PonChecker with RideChecker {
   }
 
   def apply(hands: Hands, win: Mahjong): WinHands = {
-    val ride = getRide(hands.mahjongs, win)
-    val toCount: List[CountMahjong] = hands.mahjongs.map(new CountMahjong(_))
+    val ride = getRide(hands.freeMahjongs, win)
+    val toCount: List[CountMahjong] = hands.freeMahjongs.map(new CountMahjong(_))
     def chis: List[Chi] = {
       val result = getMelds(toCount.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct, isChi, new Chi(_))
       if (result.isEmpty) result else result ::: chis
     }
     def pons = getMelds(toCount.filter(!_.isCount), isPon, new Pon(_))
     def eye = new Eye(toCount.filter(!_.isCount))
-    new WinHands(chis, pons, eye, ride, win, hands.isReach, hands.isClosed)
+    new WinHands(chis ++ hands.chis, pons ++ hands.pons, eye, ride, win, hands.isReach, hands.isClosed)
   }
 }
 
