@@ -40,32 +40,19 @@ object WinHands extends ChiChecker with PonChecker with RideChecker {
     buffer.toList
   }
 
-  def getRide(toCount: List[Mahjong], win: Mahjong): Ride = {
-    var temp = toCount
-    while (temp.size >= 3) {
-      val toCheck = temp.take(3)
-      if (!isChi(toCheck) && !isPon(toCheck)) {
-        if (toCheck.head == toCheck(1)) {
-          if (toCheck.head == win) return new Ride(toCheck.take(2))
-        } else {
-          return new Ride(toCheck.take(2))
-        }
-        temp = temp.drop(2)
-      }
-      else temp = temp.drop(3)
-    }
-    null
-  }
-
   def apply(hands: Hands, win: Mahjong): WinHands = {
-    val ride = getRide(hands.freeMahjongs, win)
     val toCount: List[CountMahjong] = hands.freeMahjongs.map(new CountMahjong(_))
     def chis: List[Chi] = {
       val result = getMelds(toCount.filter(!_.isCount).filter(m => m.typ != Types.Word).distinct, isChi, new Chi(_))
       if (result.isEmpty) result else result ::: chis
     }
     def pons = getMelds(toCount.filter(!_.isCount), isPon, new Pon(_))
-    def eye = new Eye(toCount.filter(!_.isCount))
+    def isEye: List[CountMahjong] = {
+      toCount.filter(m => !m.isCount && m != win)
+    }
+    def eye = new Eye(isEye)
+    isEye.foreach(_.isCount = true)
+    val ride = new Ride(toCount.filter(!_.isCount))
     new WinHands(chis ++ hands.chis, pons ++ hands.pons, eye, ride, win, hands.isReach, hands.isClosed)
   }
 }

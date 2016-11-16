@@ -40,7 +40,7 @@ class Hands(mahjongs: List[Mahjong]) {
   }
 
   def chi(mahjong: Mahjong, index1: Int, index2: Int): Unit = {
-    chis = chis ::: List(new Chi(List(mahjong, freeMahjongs(index1), freeMahjongs(index2)), false))
+    chis = chis ::: List(new Chi(List(mahjong, freeMahjongs(index1), freeMahjongs(index2)).sorted, false))
     discard(index1)
     discard(index2)
   }

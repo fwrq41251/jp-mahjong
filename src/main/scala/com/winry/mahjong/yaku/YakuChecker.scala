@@ -1,8 +1,8 @@
 package com.winry.mahjong.yaku
 
-import com.winry.mahjong.WinHands
-import com.winry.mahjong.checker.ConsecutiveChecker
-import com.winry.mahjong.melds.Chi
+import com.winry.mahjong.{Mahjong, WinHands}
+import com.winry.mahjong.checker.{ChiChecker, ConsecutiveChecker, PonChecker}
+import com.winry.mahjong.melds.{Chi, Pon, Ride}
 
 /**
   * Created by congzhou on 8/1/2016.
@@ -210,9 +210,39 @@ class SanankoChecker extends YakuChecker {
 
   override def value: Int = 2
 
-  override val next: YakuChecker = _
+  override val next: YakuChecker = ???
 
   override def satisfy(hands: WinHands): Boolean = {
     hands.pons.count(_.isClosed) >= 3
+  }
+}
+
+/**
+  * 全带
+  *
+  * @param isClosed
+  */
+class ChantaiyaoChecker(isClosed: Boolean) extends YakuChecker with ChiChecker with PonChecker {
+
+  override def value: Int = if (isClosed) 2 else 1
+
+  override val next: YakuChecker = ???
+
+  override def satisfy(hands: WinHands): Boolean = {
+    def isTaiYao(ride: Ride, win: Mahjong): Boolean = {
+      val meld = ride.meld
+      if (meld.size == 1) {
+        meld.head.typ.isWord || meld.head.num == 1 || meld.head.num == 9
+      } else {
+        val list = meld ::: List(win)
+        if (isChi(list)) {
+          new Chi(list).isTaiYao
+        }else {
+          new Pon(list).isTaiYao
+        }
+      }
+    }
+    hands.chis.forall(_.isTaiYao) && hands.pons.forall(_.isTaiYao) && hands.eye.isTaiYao && isTaiYao(hands.ride,
+      hands.win)
   }
 }

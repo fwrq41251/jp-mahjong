@@ -11,4 +11,5 @@ trait Meld {
   val meld: List[Mahjong]
 
   def typ: Type = meld.head.typ
+
 }

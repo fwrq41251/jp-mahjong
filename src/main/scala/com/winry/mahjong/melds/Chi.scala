@@ -31,6 +31,7 @@ class Chi(chi: List[Mahjong]) extends Triple with TriplesChecker with Closed {
   }
 
   override val meld: List[Mahjong] = chi
+
 }
 
 object Chi {
