@@ -31,7 +31,7 @@ class HandsTest {
   @Test
   def yakuCountTest(): Unit = {
     val raw = "22m23345p667788s"
-    val hands = WinHands(HandsReader.toHands(raw), Mahjong(Pin, 4))
+    val hands = new WinHands(HandsReader.toHands(raw), Mahjong(Pin, 4))
     new MyChecker(hands).check()
     println(hands.yakuCount)
   }

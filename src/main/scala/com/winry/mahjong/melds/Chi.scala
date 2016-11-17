@@ -2,22 +2,17 @@ package com.winry.mahjong.melds
 
 import com.winry.mahjong.Mahjong
 import com.winry.mahjong.Types.Type
-import com.winry.mahjong.checker.TriplesChecker
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Chi(mahjongs: List[Mahjong]) extends Triple with TriplesChecker with Closed {
-
-
-  checkTriple(mahjongs)
+class Chi(mahjongs: List[Mahjong]) extends Triple with Closed {
 
   val head = mahjongs.sorted.head
 
   override val typ: Type = head.typ
 
   override val num: Int = head.num
-
 
   def this(mahjongs: List[Mahjong], closed: Boolean) = {
     this(mahjongs)

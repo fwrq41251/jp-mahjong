@@ -1,6 +1,6 @@
 package com.winry.mahjong.yaku
 
-import com.winry.mahjong.WinHands
+import com.winry.mahjong.{Mahjong, WinHands}
 import com.winry.mahjong.checker.{ChiChecker, ConsecutiveChecker, PonChecker}
 import com.winry.mahjong.melds.Chi
 
@@ -62,7 +62,16 @@ class PinfuChecker(hands: WinHands) extends YakuChecker(hands) {
   override def value: Int = 1
 
   override def satisfy(): Boolean = {
-    hands.isClosed && hands.chis.size == 4 && hands.eye.isNoValue
+    def isRyman: Boolean = {
+      val win: Mahjong = hands.win
+      win.num match {
+        case it if 1 to 3 contains it => hands.chis.contains(new Chi(List(win)))
+        case it if 4 to 6 contains it => hands.chis.contains(new Chi(List(win))) || hands.chis.contains(new Chi(win
+          .typ, it - 2))
+        case _ => hands.chis.contains(new Chi(win.typ, win.num - 2))
+      }
+    }
+    hands.isClosed && hands.chis.size == 4 && hands.eye.isNoValue && isRyman
   }
 }
 
