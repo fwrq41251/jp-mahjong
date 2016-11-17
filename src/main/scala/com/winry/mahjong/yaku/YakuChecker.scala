@@ -13,9 +13,9 @@ sealed abstract class YakuChecker(hands: WinHands) extends ConsecutiveChecker {
 
   val next: Option[YakuChecker]
 
-  def check(): Unit = {
-    if (satisfy()) hands.add(value)
-    next.foreach(_.check())
+  def check(value: Int): Int = {
+    val newValue = if (satisfy()) value + this.value else value
+    next.map(_.check(newValue)).getOrElse(newValue)
   }
 
   def satisfy(): Boolean
@@ -23,9 +23,9 @@ sealed abstract class YakuChecker(hands: WinHands) extends ConsecutiveChecker {
 
 sealed abstract class CompoundYakuChecker(hands: WinHands) extends YakuChecker(hands) {
 
-  override def check(): Unit = {
-    if (satisfy()) hands.add(value)
-    next.get.next.foreach(_.check())
+  override def check(value: Int): Int = {
+    val newValue = if (satisfy()) value + this.value else value
+    next.get.next.map(_.check(newValue)).getOrElse(newValue)
   }
 }
 

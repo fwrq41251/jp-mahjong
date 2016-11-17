@@ -3,6 +3,7 @@ package com.winry.mahjong
 import com.winry.mahjong.checker.{ChiChecker, PonChecker}
 import com.winry.mahjong.counter.CountMahjong
 import com.winry.mahjong.melds._
+import com.winry.mahjong.yaku.MyChecker
 
 import scala.collection.mutable.ListBuffer
 
@@ -54,10 +55,6 @@ class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecke
 
   val isClosed: Boolean = hands.isClosed
 
-  var yakuCount = 0
-
-  def add(value: Int): Unit = {
-    yakuCount += value
-  }
+  var yakuCount = new MyChecker(this).check(0)
 
 }
