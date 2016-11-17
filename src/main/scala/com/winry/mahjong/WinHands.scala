@@ -9,8 +9,8 @@ import scala.collection.mutable.ListBuffer
 /**
   * Created by congzhou on 8/1/2016.
   */
-class WinHands(val chis: List[Chi], val pons: List[Pon], val eye: Eye, val ride: Ride, val win: Mahjong, val isReach:
-Boolean, val isClosed: Boolean) extends ChiChecker with PonChecker {
+class WinHands(val chis: List[Chi], val pons: List[Pon], val eye: Eye, val win: Mahjong, val isReach: Boolean, val
+isClosed: Boolean) extends ChiChecker with PonChecker {
 
   var yakuCount = 0
 
@@ -41,6 +41,7 @@ object WinHands extends ChiChecker with PonChecker with RideChecker {
   }
 
   def apply(hands: Hands, win: Mahjong): WinHands = {
+    hands.push(win)
     val toCount: List[CountMahjong] = hands.freeMahjongs.map(new CountMahjong(_))
     def getChis: List[Chi] = {
       val result = getMelds(toCount.filter(m => !m.isCount && m.typ != Types.Word).distinct, isChi, new Chi(_))
@@ -48,13 +49,16 @@ object WinHands extends ChiChecker with PonChecker with RideChecker {
     }
     val chis = getChis
     val pons = getMelds(toCount.filter(!_.isCount), isPon, new Pon(_))
-    def isEye: List[CountMahjong] = {
-      toCount.filter(m => !m.isCount && m != win)
+    val eye: Eye = {
+      val list = toCount.filter(m => !m.isCount && m != win).groupBy(identity).filter(t => t._2.size == 2).values
+      if (list.isEmpty) {
+        new Eye(List(win, win))
+      } else {
+        list.head.foreach(_.isCount = true)
+        new Eye(list.head)
+      }
     }
-    val eye = new Eye(isEye)
-    isEye.foreach(_.isCount = true)
-    val ride = new Ride(toCount.filter(!_.isCount))
-    new WinHands(chis ++ hands.chis, pons ++ hands.pons, eye, ride, win, hands.isReach, hands.isClosed)
+    new WinHands(chis ++ hands.chis, pons ++ hands.pons, eye, win, hands.isReach, hands.isClosed)
   }
 }
 

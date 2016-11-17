@@ -7,14 +7,26 @@ import com.winry.mahjong.checker.TriplesChecker
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Chi(chi: List[Mahjong]) extends Triple with TriplesChecker with Closed {
+class Chi(mahjongs: List[Mahjong]) extends Triple with TriplesChecker with Closed {
 
-  def this(chi: List[Mahjong], closed: Boolean) = {
-    this(chi)
+
+  checkTriple(mahjongs)
+
+  val head = mahjongs.sorted.head
+
+  override val typ: Type = head.typ
+
+  override val num: Int = head.num
+
+
+  def this(mahjongs: List[Mahjong], closed: Boolean) = {
+    this(mahjongs)
     isClosed = closed
   }
 
-  checkTriple(chi)
+  def this(typ: Type, num: Int) = {
+    this(List(new Mahjong(typ, num)))
+  }
 
   /**
     * 是否带幺九
@@ -22,21 +34,23 @@ class Chi(chi: List[Mahjong]) extends Triple with TriplesChecker with Closed {
     * @return
     */
   def isTaiYao: Boolean = {
-    meld.head.num == 1 || meld.head.num == 7
+    num == 1 || num == 7
   }
 
-  override def equals(that: scala.Any): Boolean = that match {
-    case that: Chi => this.meld.head == that.meld.head
+
+  def canEqual(other: Any): Boolean = other.isInstanceOf[Chi]
+
+  override def equals(other: Any): Boolean = other match {
+    case that: Chi =>
+      (that canEqual this) &&
+        typ == that.typ &&
+        num == that.num
     case _ => false
   }
 
-  override val meld: List[Mahjong] = chi
-
-}
-
-object Chi {
-
-  def apply(typ: Type, num: Int): Chi = {
-    new Chi(List(new Mahjong(typ, num)))
+  override def hashCode(): Int = {
+    val state = Seq(typ, num)
+    state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
   }
 }
+

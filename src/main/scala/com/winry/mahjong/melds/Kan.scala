@@ -1,15 +1,17 @@
 package com.winry.mahjong.melds
 
+import com.winry.mahjong.Types.Type
 import com.winry.mahjong.{Mahjong, Types}
 
 /**
   * Created by congzhou on 8/12/2016.
   */
-class Kan(kan: List[Mahjong]) extends Meld {
+class Kan(mahjons: List[Mahjong]) extends Meld {
 
-  if (kan.size != 4) throw new IllegalArgumentException("must be a four!")
+  override val num: Int = mahjons.head.num
+  override val typ: Type = mahjons.head.typ
 
-  override val meld: List[Mahjong] = kan
+  if (mahjons.size != 4) throw new IllegalArgumentException("must be a four!")
 
   /**
     * 是否纯全
@@ -17,7 +19,7 @@ class Kan(kan: List[Mahjong]) extends Meld {
     * @return
     */
   def isJunTaiYao: Boolean = {
-    !meld.head.typ.isWord && (meld.head.num == 1 || meld.head.num == 9)
+    !typ.isWord && (num == 1 || num == 9)
   }
 
   /**
@@ -26,6 +28,7 @@ class Kan(kan: List[Mahjong]) extends Meld {
     * @return
     */
   def isTaiYao: Boolean = {
-    isJunTaiYao || meld.head.typ == Types.Word
+    isJunTaiYao || typ == Types.Word
   }
+
 }

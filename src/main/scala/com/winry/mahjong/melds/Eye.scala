@@ -1,14 +1,18 @@
 package com.winry.mahjong.melds
 
+import com.winry.mahjong.Types.Type
 import com.winry.mahjong.checker.PairsChecker
 import com.winry.mahjong.{Mahjong, Types}
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Eye(eye: List[Mahjong]) extends Meld with PairsChecker {
+class Eye(mahjongs: List[Mahjong]) extends Meld with PairsChecker {
 
-  checkPair(eye)
+  checkPair(mahjongs)
+
+  override val num: Int = mahjongs.head.num
+  override val typ: Type = mahjongs.head.typ
 
   /**
     * 是否客风
@@ -23,7 +27,7 @@ class Eye(eye: List[Mahjong]) extends Meld with PairsChecker {
     * @return
     */
   def isJunTaiYao: Boolean = {
-    !meld.head.typ.isWord && (meld.head.num == 1 || meld.head.num == 9)
+    !typ.isWord && (num == 1 || num == 9)
   }
 
   /**
@@ -32,8 +36,7 @@ class Eye(eye: List[Mahjong]) extends Meld with PairsChecker {
     * @return
     */
   def isTaiYao: Boolean = {
-    isJunTaiYao || meld.head.typ == Types.Word
+    isJunTaiYao || typ == Types.Word
   }
 
-  override val meld: List[Mahjong] = eye
 }

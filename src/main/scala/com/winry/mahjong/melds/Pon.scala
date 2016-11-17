@@ -1,19 +1,23 @@
 package com.winry.mahjong.melds
 
+import com.winry.mahjong.Types.Type
 import com.winry.mahjong.checker.TriplesChecker
 import com.winry.mahjong.{Mahjong, Types}
 
 /**
   * Created by congzhou on 8/1/2016.
   */
-class Pon(pon: List[Mahjong]) extends Triple with TriplesChecker with Closed {
+class Pon(mahjongs: List[Mahjong]) extends Triple with TriplesChecker with Closed {
+
+  override val num: Int = mahjongs.head.num
+  override val typ: Type = mahjongs.head.typ
 
   def this(chi: List[Mahjong], closed: Boolean) = {
     this(chi)
     isClosed = closed
   }
 
-  checkTriple(pon)
+  checkTriple(mahjongs)
 
   /**
     * 是否纯全
@@ -21,7 +25,7 @@ class Pon(pon: List[Mahjong]) extends Triple with TriplesChecker with Closed {
     * @return
     */
   def isJunTaiYao: Boolean = {
-    !meld.head.typ.isWord && (meld.head.num == 1 || meld.head.num == 9)
+    !typ.isWord && (num == 1 || num == 9)
   }
 
   /**
@@ -30,13 +34,22 @@ class Pon(pon: List[Mahjong]) extends Triple with TriplesChecker with Closed {
     * @return
     */
   def isTaiYao: Boolean = {
-    isJunTaiYao || meld.head.typ == Types.Word
+    isJunTaiYao || typ == Types.Word
   }
 
-  override def equals(that: scala.Any): Boolean = that match {
-    case that: Pon => this.meld.head == that.meld.head
+
+  def canEqual(other: Any): Boolean = other.isInstanceOf[Pon]
+
+  override def equals(other: Any): Boolean = other match {
+    case that: Pon =>
+      (that canEqual this) &&
+        num == that.num &&
+        typ == that.typ
     case _ => false
   }
 
-  override val meld: List[Mahjong] = pon
+  override def hashCode(): Int = {
+    val state = Seq(num, typ)
+    state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
+  }
 }

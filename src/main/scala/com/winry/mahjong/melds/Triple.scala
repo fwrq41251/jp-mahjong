@@ -5,6 +5,4 @@ package com.winry.mahjong.melds
   */
 abstract class Triple extends Meld {
 
-  def num: Int = meld.head.num
-
 }
