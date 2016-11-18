@@ -29,11 +29,20 @@ class Player(id: String) {
     this.hands = hands
   }
 
+  /**
+    * 弃牌
+    * @param toDiscard
+    * @return
+    */
   def discard(toDiscard: Int) = {
     val discard = hands.discard(toDiscard)
     hou += discard
   }
 
+  /**
+    * 发牌
+    * @param mahjong
+    */
   def deal(mahjong: Mahjong) = {
     hands.push(mahjong)
   }

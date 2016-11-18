@@ -26,35 +26,46 @@ class Game(users: List[User]) {
   /**
     * 立直棒
     */
-  val reachbou: Int = 0
+  var reachbou: Int = 0
 
   /**
     * 本场
     */
-  val honba: Int = 0
+  var honba: Int = 0
 
   /**
     * 是否连庄
     */
-  val renchan: Boolean = false
+  var renchan: Boolean = false
 
   /**
     * 局数
     */
-  val kyoku: Int = 1
+  var kyoku: Int = 1
 
   /**
     * 场风
     */
-  val kaze: Int = 1
+  var kaze: Int = 1
 
-  def newKyoku() = {
+  def newKyoku(renchan: Boolean) = {
+    this.renchan = renchan
     yama = new Yama()
     players.foreach(p => {
       val mahjongs = for (i <- 1 to 13) yield yama.take()
       p.init(new Hands(mahjongs.toList))
     })
-    players.head.deal(yama.take())
+    val oya = players.head
+    oya.deal(yama.take())
+    if (renchan) {
+      honba += 1
+    } else {
+      honba = 0
+      kyoku += 1
+      if (kyoku % 4 == 1) kaze += 1
+      players -= oya
+      players += oya
+    }
   }
 
 }

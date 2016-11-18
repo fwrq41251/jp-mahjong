@@ -52,8 +52,8 @@ class Hands(mahjongs: List[Mahjong]) {
 
   def pon(mahjong: Mahjong): Unit = {
     pons += new Pon(List(mahjong, mahjong, mahjong), false)
-    freeMahjongs.remove(freeMahjongs.indexOf(mahjong))
-    freeMahjongs.remove(freeMahjongs.indexOf(mahjong))
+    freeMahjongs -= mahjong
+    freeMahjongs -= mahjong
   }
 
   def kan(mahjong: Mahjong): Unit = ???
