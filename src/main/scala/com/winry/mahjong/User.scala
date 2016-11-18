@@ -9,7 +9,7 @@ class User {
 
   val name: String = _
 
-  val pt: Int = _
+  val pt: Int = 0
 
-  val level: Int = _
+  val level: Int = 0
 }

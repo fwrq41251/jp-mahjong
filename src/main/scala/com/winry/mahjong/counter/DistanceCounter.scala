@@ -10,7 +10,7 @@ class DistanceCounter(hands: Hands) extends ChiChecker with PonChecker with Ride
 
   implicit def convert(l: List[CountMahjong]): List[Mahjong] = l map { a => a: Mahjong }
 
-  var countMahjongs: List[CountMahjong] = hands.freeMahjongs.map(new CountMahjong(_))
+  var countMahjongs: List[CountMahjong] = hands.freeMahjongs.toList.map(new CountMahjong(_))
 
   def countDistance: Int = {
     if (hands.isClosed) {

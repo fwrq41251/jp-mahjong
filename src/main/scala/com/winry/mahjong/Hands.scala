@@ -2,23 +2,24 @@ package com.winry.mahjong
 
 import com.winry.mahjong.counter.DistanceCounter
 import com.winry.mahjong.melds.{Chi, Kan, Pon}
-import com.winry.mahjong.util.ListUtil
+
+import scala.collection.mutable.ListBuffer
 
 /**
   * Created by congzhou on 7/29/2016.
   */
 class Hands(mahjongs: List[Mahjong]) {
-  var freeMahjongs = mahjongs
+  var freeMahjongs: ListBuffer[Mahjong] = mahjongs.to[ListBuffer]
   var isTen = false
   var isReach = false
   //是否鸣牌
   var isClosed = true
-  var chis: List[Chi] = Nil
-  var pons: List[Pon] = Nil
-  var kans: List[Kan] = Nil
+  var chis: ListBuffer[Chi] = ListBuffer.empty
+  var pons: ListBuffer[Pon] = ListBuffer.empty
+  var kans: ListBuffer[Kan] = ListBuffer.empty
 
   def push(mahjong: Mahjong): Unit = {
-    freeMahjongs = freeMahjongs ::: List(mahjong)
+    freeMahjongs = freeMahjongs += mahjong
     freeMahjongs = freeMahjongs.sorted
     if (getDistance == 0) isTen = true
   }
@@ -27,8 +28,8 @@ class Hands(mahjongs: List[Mahjong]) {
     *
     * @param toDiscard index of mahjong to discard
     */
-  def discard(toDiscard: Int): Unit = {
-    freeMahjongs = freeMahjongs.take(toDiscard) ++ freeMahjongs.drop(toDiscard + 1)
+  def discard(toDiscard: Int): Mahjong = {
+    freeMahjongs.remove(toDiscard)
   }
 
   def canChi(mahjong: Mahjong): Boolean = {
@@ -40,7 +41,7 @@ class Hands(mahjongs: List[Mahjong]) {
   }
 
   def chi(mahjong: Mahjong, index1: Int, index2: Int): Unit = {
-    chis = chis ::: List(new Chi(List(mahjong, freeMahjongs(index1), freeMahjongs(index2)).sorted, false))
+    chis += new Chi(List(mahjong, freeMahjongs(index1), freeMahjongs(index2)).sorted, false)
     discard(index1)
     discard(index2)
   }
@@ -50,9 +51,9 @@ class Hands(mahjongs: List[Mahjong]) {
   }
 
   def pon(mahjong: Mahjong): Unit = {
-    pons = pons ::: List(new Pon(List(mahjong, mahjong, mahjong), false))
-    freeMahjongs = ListUtil.removeElement(freeMahjongs, mahjong)
-    freeMahjongs = ListUtil.removeElement(freeMahjongs, mahjong)
+    pons += new Pon(List(mahjong, mahjong, mahjong), false)
+    freeMahjongs.remove(freeMahjongs.indexOf(mahjong))
+    freeMahjongs.remove(freeMahjongs.indexOf(mahjong))
   }
 
   def kan(mahjong: Mahjong): Unit = ???
