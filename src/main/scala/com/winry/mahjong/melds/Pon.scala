@@ -17,6 +17,10 @@ class Pon(mahjongs: List[Mahjong]) extends Triple with TriplesChecker with Close
     isClosed = closed
   }
 
+  def this(typ: Type, num: Int) = {
+    this(List(new Mahjong(typ, num)))
+  }
+
   checkTriple(mahjongs)
 
   /**

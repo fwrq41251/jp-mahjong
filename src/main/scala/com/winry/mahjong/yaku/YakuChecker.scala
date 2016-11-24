@@ -149,7 +149,7 @@ class RyanpeikouChecker(hands: WinHands, game: Game) extends CompoundYakuChecker
 
   override def value: Int = 3
 
-  override val next = if (satisfy()) Some(new ToitoihouChecker(hands, game)) else Some(new IipeikouChecker(hands, game))
+  override val next = Some(new IipeikouChecker(hands, game))
 
   override def satisfy(): Boolean = {
     val chis = hands.chis
@@ -252,5 +252,56 @@ class ChantaiyaoChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
 
   override def satisfy(): Boolean = {
     hands.chis.forall(_.isTaiYao) && hands.pons.forall(_.isTaiYao) && hands.eye.isTaiYao
+  }
+}
+
+/**
+  * 纯全带
+  *
+  * @param hands
+  * @param game
+  */
+class JunchantaiyaoChecker(hands: WinHands, game: Game) extends CompoundYakuChecker(hands, game) {
+
+  override def value: Int = if (hands.isClosed) 3 else 2
+
+  override val next: Option[YakuChecker] = Some(new ChantaiyaoChecker(hands, game))
+
+  override def satisfy(): Boolean = {
+    hands.chis.forall(_.isTaiYao) && hands.pons.forall(_.isJunTaiYao) && hands.eye.isJunTaiYao
+  }
+}
+
+/**
+  * 混老头
+  *
+  * @param hands
+  * @param game
+  */
+class HonroutouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override def value: Int = 2
+
+  override val next: Option[YakuChecker] = ???
+
+  override def satisfy(): Boolean = {
+    hands.chis.isEmpty && hands.pons.forall(_.isJunTaiYao) && hands.eye.isJunTaiYao
+  }
+}
+
+/**
+  * 小三元
+  *
+  * @param hands
+  * @param game
+  */
+class ShousangenChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override def value: Int = 2
+
+  override val next: Option[YakuChecker] = ???
+
+  override def satisfy(): Boolean = {
+    hands.pons.contains(new Pon(Word, 5)) && hands.pons.contains(new Pon(Word, 6)) && hands.pons.contains(new Pon(Word, 7))
   }
 }

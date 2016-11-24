@@ -2,7 +2,8 @@ package com.winry
 
 import com.winry.mahjong.Types.Pin
 import com.winry.mahjong.yaku.MyChecker
-import com.winry.mahjong.{Game, HandsReader, Mahjong, WinHands}
+import com.winry.mahjong._
+import com.winry.mahjong.util.HandsReader
 import org.junit.Test
 
 
@@ -39,4 +40,11 @@ class HandsTest {
   def nilTest(): Unit = {
     print(Nil.size)
   }
+
+  @Test
+  def yamaTest(): Unit = {
+    val yama = new Yama()
+    println(yama.mahjongs.size)
+  }
+
 }

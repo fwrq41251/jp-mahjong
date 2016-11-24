@@ -5,9 +5,9 @@ package com.winry.mahjong
   */
 class User {
 
-  val id: String = _
+  val id: String = ???
 
-  val name: String = _
+  val name: String = ???
 
   val pt: Int = 0
 

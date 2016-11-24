@@ -1,4 +1,6 @@
-package com.winry.mahjong
+package com.winry.mahjong.util
+
+import com.winry.mahjong.{Hands, Mahjong, Types}
 
 import scala.collection.mutable.ListBuffer
 
