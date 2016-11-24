@@ -21,7 +21,7 @@ class Server(host: String, port: Int) extends Actor with ActorLogging {
 
   def receive: Receive = {
     case b@Bound(localAddress) =>
-    // do some logging or setup ...
+      log.info("server is listening on:" + localAddress)
 
     case CommandFailed(_: Bind) => context stop self
 
