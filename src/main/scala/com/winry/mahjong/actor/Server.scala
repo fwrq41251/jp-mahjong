@@ -14,7 +14,6 @@ class Server(host: String, port: Int) extends Actor with ActorLogging {
   import context.system
 
   override def preStart() {
-    log.info("Starting tcp net server!")
     val opts = List(SO.KeepAlive(on = true), SO.TcpNoDelay(on = true))
     IO(Tcp) ! Bind(self, new InetSocketAddress(host, port), options = opts)
   }
@@ -22,7 +21,6 @@ class Server(host: String, port: Int) extends Actor with ActorLogging {
 
   def receive: Receive = {
     case b@Bound(localAddress) =>
-      log.info("server is listening on:" + localAddress)
 
     case CommandFailed(_: Bind) => context stop self
 

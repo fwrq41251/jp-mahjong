@@ -2,7 +2,7 @@ package com.winry.mahjong.service
 
 import akka.actor.ActorRef
 import com.winry.mahjong.Lobby
-import com.winry.mahjong.packet.{LoginReq, LoginResp}
+import com.winry.mahjong.message.{LoginReq, LoginResp}
 
 /**
   * Created by User on 11/25/2016.
