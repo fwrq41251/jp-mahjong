@@ -6,16 +6,16 @@ option java_package = "com.winry.mahjong";
 
 message PacketMSG {
     oneof msg {
-        Login login = 1;
+        LoginReq loginReq = 1;
         LoginResp loginResp = 2;
     }
 }
 
-message Login {
+message LoginReq {
     string name = 1;
     //  required string	pass   	= 2;
 }
 
 message LoginResp {
-    //  required int64	id  	= 1;
+    int64 id = 1;
 }
