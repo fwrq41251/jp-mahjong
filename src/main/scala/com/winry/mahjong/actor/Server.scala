@@ -10,7 +10,8 @@ import akka.io.{IO, Tcp}
   */
 class Server(host: String, port: Int) extends Actor with ActorLogging {
 
-  import akka.io.Tcp._
+  import Tcp._
+  import context.system
 
   override def preStart() {
     log.info("Starting tcp net server!")
@@ -26,9 +27,9 @@ class Server(host: String, port: Int) extends Actor with ActorLogging {
     case CommandFailed(_: Bind) => context stop self
 
     case c@Connected(remote, local) =>
-      val handler = context.actorOf(Props[GameHandler])
+      val dispatcher = context.actorOf(Props[Dispatcher])
       val connection = sender()
-      connection ! Register(handler)
+      connection ! Register(dispatcher)
   }
 
 }
