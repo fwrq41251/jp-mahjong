@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package packet;
 
-option java_package = "com.winry.mahjong.packet";
+option java_package = "com.winry.mahjong";
 
 message PacketMSG {
     oneof msg {

@@ -2,8 +2,8 @@ package com.winry.mahjong.actor
 
 import akka.actor.{Actor, ActorLogging}
 import akka.io.Tcp.{PeerClosed, Received}
-import com.winry.mahjong.packet.packet.PacketMSG
-import com.winry.mahjong.packet.packet.PacketMSG.Msg
+import com.winry.mahjong.packet.PacketMSG
+import com.winry.mahjong.packet.PacketMSG.Msg
 
 /**
   * Created by User on 11/24/2016.
