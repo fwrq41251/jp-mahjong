@@ -18,7 +18,6 @@ final case class PacketMSG(
       if (msg.loginReq.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.loginReq.get.serializedSize) + msg.loginReq.get.serializedSize }
       if (msg.loginResp.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.loginResp.get.serializedSize) + msg.loginResp.get.serializedSize }
       if (msg.readyReq.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.readyReq.get.serializedSize) + msg.readyReq.get.serializedSize }
-      if (msg.gameStartResp.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.gameStartResp.get.serializedSize) + msg.gameStartResp.get.serializedSize }
       __size
     }
     final override def serializedSize: Int = {
@@ -45,11 +44,6 @@ final case class PacketMSG(
         _output__.writeUInt32NoTag(__v.serializedSize)
         __v.writeTo(_output__)
       };
-      msg.gameStartResp.foreach { __v =>
-        _output__.writeTag(4, 2)
-        _output__.writeUInt32NoTag(__v.serializedSize)
-        __v.writeTo(_output__)
-      };
     }
     def mergeFrom(`_input__`: _root_.com.google.protobuf.CodedInputStream): com.winry.mahjong.message.PacketMSG = {
       var __msg = this.msg
@@ -64,8 +58,6 @@ final case class PacketMSG(
             __msg = com.winry.mahjong.message.PacketMSG.Msg.LoginResp(_root_.com.trueaccord.scalapb.LiteParser.readMessage(_input__, msg.loginResp.getOrElse(com.winry.mahjong.message.LoginResp.defaultInstance)))
           case 26 =>
             __msg = com.winry.mahjong.message.PacketMSG.Msg.ReadyReq(_root_.com.trueaccord.scalapb.LiteParser.readMessage(_input__, msg.readyReq.getOrElse(com.winry.mahjong.message.ReadyReq.defaultInstance)))
-          case 34 =>
-            __msg = com.winry.mahjong.message.PacketMSG.Msg.GameStartResp(_root_.com.trueaccord.scalapb.LiteParser.readMessage(_input__, msg.gameStartResp.getOrElse(com.winry.mahjong.message.GameStartResp.defaultInstance)))
           case tag => _input__.skipField(tag)
         }
       }
@@ -79,8 +71,6 @@ final case class PacketMSG(
     def withLoginResp(__v: com.winry.mahjong.message.LoginResp): PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.LoginResp(__v))
     def getReadyReq: com.winry.mahjong.message.ReadyReq = msg.readyReq.getOrElse(com.winry.mahjong.message.ReadyReq.defaultInstance)
     def withReadyReq(__v: com.winry.mahjong.message.ReadyReq): PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.ReadyReq(__v))
-    def getGameStartResp: com.winry.mahjong.message.GameStartResp = msg.gameStartResp.getOrElse(com.winry.mahjong.message.GameStartResp.defaultInstance)
-    def withGameStartResp(__v: com.winry.mahjong.message.GameStartResp): PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.GameStartResp(__v))
     def clearMsg: PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.Empty)
     def withMsg(__v: com.winry.mahjong.message.PacketMSG.Msg): PacketMSG = copy(msg = __v)
     def getField(__field: _root_.com.google.protobuf.Descriptors.FieldDescriptor): scala.Any = {
@@ -88,7 +78,6 @@ final case class PacketMSG(
         case 1 => msg.loginReq.getOrElse(null)
         case 2 => msg.loginResp.getOrElse(null)
         case 3 => msg.readyReq.getOrElse(null)
-        case 4 => msg.gameStartResp.getOrElse(null)
       }
     }
     override def toString: String = _root_.com.trueaccord.scalapb.TextFormat.printToUnicodeString(this)
@@ -103,8 +92,7 @@ object PacketMSG extends com.trueaccord.scalapb.GeneratedMessageCompanion[com.wi
     com.winry.mahjong.message.PacketMSG(
       msg = __fieldsMap.get(__fields.get(0)).asInstanceOf[scala.Option[com.winry.mahjong.message.LoginReq]].map(com.winry.mahjong.message.PacketMSG.Msg.LoginReq(_)) orElse
 __fieldsMap.get(__fields.get(1)).asInstanceOf[scala.Option[com.winry.mahjong.message.LoginResp]].map(com.winry.mahjong.message.PacketMSG.Msg.LoginResp(_)) orElse
-__fieldsMap.get(__fields.get(2)).asInstanceOf[scala.Option[com.winry.mahjong.message.ReadyReq]].map(com.winry.mahjong.message.PacketMSG.Msg.ReadyReq(_)) orElse
-__fieldsMap.get(__fields.get(3)).asInstanceOf[scala.Option[com.winry.mahjong.message.GameStartResp]].map(com.winry.mahjong.message.PacketMSG.Msg.GameStartResp(_)) getOrElse com.winry.mahjong.message.PacketMSG.Msg.Empty
+__fieldsMap.get(__fields.get(2)).asInstanceOf[scala.Option[com.winry.mahjong.message.ReadyReq]].map(com.winry.mahjong.message.PacketMSG.Msg.ReadyReq(_)) getOrElse com.winry.mahjong.message.PacketMSG.Msg.Empty
     )
   }
   def descriptor: _root_.com.google.protobuf.Descriptors.Descriptor = MessageProto.descriptor.getMessageTypes.get(0)
@@ -115,7 +103,6 @@ __fieldsMap.get(__fields.get(3)).asInstanceOf[scala.Option[com.winry.mahjong.mes
       case 1 => __out = com.winry.mahjong.message.LoginReq
       case 2 => __out = com.winry.mahjong.message.LoginResp
       case 3 => __out = com.winry.mahjong.message.ReadyReq
-      case 4 => __out = com.winry.mahjong.message.GameStartResp
     }
   __out
   }
@@ -129,11 +116,9 @@ __fieldsMap.get(__fields.get(3)).asInstanceOf[scala.Option[com.winry.mahjong.mes
     def isLoginReq: Boolean = false
     def isLoginResp: Boolean = false
     def isReadyReq: Boolean = false
-    def isGameStartResp: Boolean = false
     def loginReq: scala.Option[com.winry.mahjong.message.LoginReq] = None
     def loginResp: scala.Option[com.winry.mahjong.message.LoginResp] = None
     def readyReq: scala.Option[com.winry.mahjong.message.ReadyReq] = None
-    def gameStartResp: scala.Option[com.winry.mahjong.message.GameStartResp] = None
   }
   object Msg extends {
     @SerialVersionUID(0L)
@@ -161,22 +146,14 @@ __fieldsMap.get(__fields.get(3)).asInstanceOf[scala.Option[com.winry.mahjong.mes
       override def readyReq: scala.Option[com.winry.mahjong.message.ReadyReq] = Some(value)
       override def number: Int = 3
     }
-    @SerialVersionUID(0L)
-    case class GameStartResp(value: com.winry.mahjong.message.GameStartResp) extends com.winry.mahjong.message.PacketMSG.Msg {
-      override def isGameStartResp: Boolean = true
-      override def gameStartResp: scala.Option[com.winry.mahjong.message.GameStartResp] = Some(value)
-      override def number: Int = 4
-    }
   }
   implicit class PacketMSGLens[UpperPB](_l: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.PacketMSG]) extends _root_.com.trueaccord.lenses.ObjectLens[UpperPB, com.winry.mahjong.message.PacketMSG](_l) {
     def loginReq: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.LoginReq] = field(_.getLoginReq)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.LoginReq(f_)))
     def loginResp: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.LoginResp] = field(_.getLoginResp)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.LoginResp(f_)))
     def readyReq: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.ReadyReq] = field(_.getReadyReq)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.ReadyReq(f_)))
-    def gameStartResp: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.GameStartResp] = field(_.getGameStartResp)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.GameStartResp(f_)))
     def msg: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.PacketMSG.Msg] = field(_.msg)((c_, f_) => c_.copy(msg = f_))
   }
   final val LOGINREQ_FIELD_NUMBER = 1
   final val LOGINRESP_FIELD_NUMBER = 2
   final val READYREQ_FIELD_NUMBER = 3
-  final val GAMESTARTRESP_FIELD_NUMBER = 4
 }

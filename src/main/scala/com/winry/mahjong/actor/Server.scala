@@ -7,7 +7,7 @@ import akka.io.{IO, Tcp}
 import com.winry.mahjong.Session
 
 /**
-  * one app only have one Server actor.
+  * One app only have one Server actor.
   */
 class Server(host: String, port: Int) extends Actor with ActorLogging {
 
