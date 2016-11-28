@@ -11,7 +11,7 @@ import scala.collection.mutable.ListBuffer
   */
 class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecker {
 
-  def getMelds[A](toCount: List[CountMahjong], predicate: List[Mahjong] => Boolean, apply: List[Mahjong] => A) = {
+  def getMelds[A](toCount: List[CountMahjong], predicate: List[Mahjong] => Boolean, apply: List[Mahjong] => A): List[A] = {
     val buffer = ListBuffer.empty[A]
     var temp = toCount
     while (temp.size >= 3) {

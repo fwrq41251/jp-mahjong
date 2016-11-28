@@ -8,7 +8,7 @@ import com.winry.mahjong.Types.Type
   */
 class Chi(mahjongs: List[Mahjong]) extends Triple with Closed {
 
-  val head = mahjongs.sorted.head
+  val head: Mahjong = mahjongs.sorted.head
 
   override val typ: Type = head.typ
 

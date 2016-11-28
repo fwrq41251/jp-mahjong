@@ -9,7 +9,6 @@ message PacketMSG {
         LoginReq loginReq = 1;
         LoginResp loginResp = 2;
         ReadyReq readyReq = 3;
-        ReadyResp readyResp = 4;
     }
 }
 
@@ -26,6 +25,6 @@ message ReadyReq {
 
 }
 
-message ReadyResp {
+message GameStartResp {
 
 }

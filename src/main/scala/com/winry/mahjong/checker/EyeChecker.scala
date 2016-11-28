@@ -9,6 +9,6 @@ trait EyeChecker extends PairsChecker {
 
   def isEye(toCheck:List[Mahjong]): Boolean = {
     checkPair(toCheck)
-    toCheck(0) == toCheck(1)
+    toCheck.head == toCheck(1)
   }
 }

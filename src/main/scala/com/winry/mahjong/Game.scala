@@ -21,7 +21,7 @@ class Game(users: List[User]) {
   /**
     * 用户
     */
-  val userMap: Map[String, User] = users.map(u => u.id -> u).toMap
+  val userMap: Map[Long, User] = users.map(u => u.id -> u).toMap
 
   /**
     * 立直棒
@@ -48,11 +48,11 @@ class Game(users: List[User]) {
     */
   var kaze: Int = 1
 
-  def newKyoku(renchan: Boolean) = {
+  def newKyoku(renchan: Boolean): Unit = {
     this.renchan = renchan
     yama = new Yama()
     players.foreach(p => {
-      val mahjongs = for (i <- 1 to 13) yield yama.take()
+      val mahjongs = for (_ <- 1 to 13) yield yama.take()
       p.init(new Hands(mahjongs.toList))
     })
     val oya = players.head

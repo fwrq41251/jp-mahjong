@@ -16,14 +16,14 @@ class Yama {
   val mahjongs: List[Mahjong] = {
     var buffer = ListBuffer.empty[Mahjong]
     def appendDigits(typ: Type) = {
-      for (i <- 1 to 9; j <- 1 to 4) {
+      for (i <- 1 to 9; _ <- 1 to 4) {
         buffer += new Mahjong(typ, i)
       }
     }
     appendDigits(Wan)
     appendDigits(Pin)
     appendDigits(Sou)
-    for (i <- 1 to 7; j <- 1 to 4) {
+    for (i <- 1 to 7; _ <- 1 to 4) {
       buffer += new Mahjong(Word, i)
     }
     Random.shuffle(buffer.toList)

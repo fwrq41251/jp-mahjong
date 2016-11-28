@@ -5,9 +5,9 @@ import scala.collection.mutable.ListBuffer
 /**
   * Created by congzhou on 8/15/2016.
   */
-class Player(id: String) {
+class Player(id: Long) {
 
-  val userId: String = id
+  val userId: Long = id
 
   /**
     * 点数
@@ -24,26 +24,28 @@ class Player(id: String) {
     */
   var hands: Hands = _
 
-  def init(hands: Hands) = {
+  def init(hands: Hands): Unit = {
     hou.clear()
     this.hands = hands
   }
 
   /**
     * 弃牌
+    *
     * @param toDiscard
     * @return
     */
-  def discard(toDiscard: Int) = {
+  def discard(toDiscard: Int): Unit = {
     val discard = hands.discard(toDiscard)
     hou += discard
   }
 
   /**
     * 发牌
+    *
     * @param mahjong
     */
-  def deal(mahjong: Mahjong) = {
+  def deal(mahjong: Mahjong): Unit = {
     hands.push(mahjong)
   }
 }

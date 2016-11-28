@@ -8,4 +8,6 @@ import com.winry.mahjong.User
 object UserService {
 
   def findUserByName(name: String): User = ???
+
+  def findUserById(id: Long): User = ???
 }
