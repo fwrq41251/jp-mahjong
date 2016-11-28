@@ -1,7 +1,5 @@
 package com.winry.mahjong
 
-import akka.actor.ActorRef
-
 import scala.collection.mutable
 
 /**
@@ -9,13 +7,9 @@ import scala.collection.mutable
   */
 object Lobby {
 
-  var currentSessionId = 1L
   private val sessionMap = mutable.Map.empty[Session, User]
 
-  def join(client:ActorRef, user: User): Long = {
-    val session = new Session(currentSessionId, client)
+  def join(session: Session, user: User): Unit = {
     sessionMap += session -> user
-    currentSessionId += 1
-    currentSessionId
   }
 }

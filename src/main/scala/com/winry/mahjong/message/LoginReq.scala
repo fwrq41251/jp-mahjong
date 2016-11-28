@@ -75,7 +75,7 @@ object LoginReq extends com.trueaccord.scalapb.GeneratedMessageCompanion[com.win
       __fieldsMap.getOrElse(__fields.get(0), "").asInstanceOf[String]
     )
   }
-  def descriptor: _root_.com.google.protobuf.Descriptors.Descriptor = PacketProto.descriptor.getMessageTypes.get(1)
+  def descriptor: _root_.com.google.protobuf.Descriptors.Descriptor = MessageProto.descriptor.getMessageTypes.get(1)
   def messageCompanionForField(__field: _root_.com.google.protobuf.Descriptors.FieldDescriptor): _root_.com.trueaccord.scalapb.GeneratedMessageCompanion[_] = throw new MatchError(__field)
   def enumCompanionForField(__field: _root_.com.google.protobuf.Descriptors.FieldDescriptor): _root_.com.trueaccord.scalapb.GeneratedEnumCompanion[_] = throw new MatchError(__field)
   lazy val defaultInstance = com.winry.mahjong.message.LoginReq(

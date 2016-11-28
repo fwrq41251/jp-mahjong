@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package packet;
+package message;
 
 option java_package = "com.winry.mahjong";
 
@@ -8,6 +8,8 @@ message PacketMSG {
     oneof msg {
         LoginReq loginReq = 1;
         LoginResp loginResp = 2;
+        ReadyReq readyReq = 3;
+        ReadyResp readyResp = 4;
     }
 }
 
@@ -18,4 +20,12 @@ message LoginReq {
 
 message LoginResp {
     int64 id = 1;
+}
+
+message ReadyReq {
+
+}
+
+message ReadyResp {
+
 }

@@ -1,17 +1,16 @@
 package com.winry.mahjong.service
 
-import akka.actor.ActorRef
-import com.winry.mahjong.Lobby
 import com.winry.mahjong.message.{LoginReq, LoginResp}
+import com.winry.mahjong.{Lobby, Session}
 
 /**
   * Created by User on 11/25/2016.
   */
 object LoginService {
 
-  def login(client: ActorRef, loginReq: LoginReq): LoginResp = {
+  def login(session: Session, loginReq: LoginReq): LoginResp = {
     val user = UserService.findUserByName(loginReq.name)
-    val sessionId = Lobby.join(client, user)
-    LoginResp(sessionId)
+    Lobby.join(session, user)
+    LoginResp(session.id)
   }
 }

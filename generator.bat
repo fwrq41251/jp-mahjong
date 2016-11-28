@@ -1,2 +1,2 @@
-scalapbc proto\packet.proto --scala_out=%~dp0\src\main\scala
+scalapbc proto\message.proto --scala_out=%~dp0\src\main\scala
 pause
