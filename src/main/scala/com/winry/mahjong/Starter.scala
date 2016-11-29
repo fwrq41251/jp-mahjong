@@ -9,6 +9,6 @@ import com.winry.mahjong.actor.{Lobby, Server}
 object Starter extends App {
 
   val actorSystem = ActorSystem("server")
-  val server = actorSystem.actorOf(Props(new Server("127.0.0.1", 8888)), "front")
+  val server = actorSystem.actorOf(Server.props("127.0.0.1", 8888), "front")
   val lobby = actorSystem.actorOf(Props[Lobby], "lobby")
 }
