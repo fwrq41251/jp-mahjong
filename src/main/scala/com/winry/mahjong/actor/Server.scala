@@ -2,7 +2,7 @@ package com.winry.mahjong.actor
 
 import java.net.InetSocketAddress
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{Actor, ActorLogging}
 import akka.io.{IO, Tcp}
 import com.winry.mahjong.Session
 
@@ -30,7 +30,7 @@ class Server(host: String, port: Int) extends Actor with ActorLogging {
       val connection = sender()
       val session = new Session(sessionCount, connection)
       sessionCount += 1
-      val dispatcher = context.actorOf(Props(new Dispatcher(session)))
+      val dispatcher = context.actorOf(Dispatcher.props(session))
       connection ! Register(dispatcher)
   }
 
