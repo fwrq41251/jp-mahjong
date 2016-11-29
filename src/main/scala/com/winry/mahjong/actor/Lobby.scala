@@ -1,7 +1,7 @@
 package com.winry.mahjong.actor
 
 import akka.actor.{Actor, ActorSelection}
-import com.winry.mahjong.actor.GameController.StartGame
+import com.winry.mahjong.actor.GameCenter.StartGame
 import com.winry.mahjong.actor.Lobby.{Login, Ready}
 import com.winry.mahjong.message.{LoginReq, LoginResp}
 import com.winry.mahjong.service.UserService

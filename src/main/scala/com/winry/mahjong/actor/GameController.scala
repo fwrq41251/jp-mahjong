@@ -1,41 +1,38 @@
 package com.winry.mahjong.actor
 
-import akka.actor.Actor
-import com.winry.mahjong.actor.GameController.{Reach, StartGame}
-import com.winry.mahjong.message.GameStartResp
-import com.winry.mahjong.{Game, Session, User}
-
-import scala.collection.mutable
+import akka.actor.{Actor, Props}
+import com.winry.mahjong.actor.GameController.Reach
+import com.winry.mahjong.message.ReachResp
+import com.winry.mahjong.{Game, Session}
 
 /**
   * Created by User on 11/29/2016.
   */
-class GameController extends Actor {
-
-  var currentGameId = 1L
-  val gameMap: mutable.Map[Long, Game] = mutable.Map.empty
+class GameController(val sessions: List[Session], val game: Game) extends Actor {
 
   override def receive: Receive = {
-    case StartGame(sessions, users) =>
-      val game = new Game(users)
-      gameMap += currentGameId -> game
-      currentGameId += 1
-      sessions.foreach(_.send(GameStartResp))
     case Reach(gameId, userId, toDiscard) =>
-      val game = gameMap(gameId)
       game.reach(userId, toDiscard)
+      //todo set resp fields
+      sessions.foreach(_.send(ReachResp))
     case _ =>
   }
 }
 
 object GameController {
 
-  case class StartGame(sessions: List[Session], users: List[User])
+  def props(sessions: List[Session], game: Game): Props = Props(new GameController(sessions, game))
 
-  case class Reach(gameId: Long, userId: Long, toDiscard: Int)
+  trait GameCommand {
+    def gameId: Long
 
-  case class Tsumo(gameId: Long, userId: Long)
+    def userId: Long
+  }
 
-  case class Discard(gameId: Long, userId: Long, toDiscard: Int)
+  case class Reach(gameId: Long, userId: Long, toDiscard: Int) extends GameCommand
+
+  case class Tsumo(gameId: Long, userId: Long) extends GameCommand
+
+  case class Discard(gameId: Long, userId: Long, toDiscard: Int) extends GameCommand
 
 }

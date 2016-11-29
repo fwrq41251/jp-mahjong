@@ -37,6 +37,9 @@ message ReachReq {
     int32 toDiscard = 3;
 }
 
+message ReachResp {
+}
+
 message TsumoReq {
     int64 gameId = 1;
     int64 userId = 2;

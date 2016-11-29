@@ -90,7 +90,7 @@ object TsumoReq extends com.trueaccord.scalapb.GeneratedMessageCompanion[com.win
       __fieldsMap.getOrElse(__fields.get(1), 0L).asInstanceOf[Long]
     )
   }
-  def descriptor: _root_.com.google.protobuf.Descriptors.Descriptor = MessageProto.descriptor.getMessageTypes.get(6)
+  def descriptor: _root_.com.google.protobuf.Descriptors.Descriptor = MessageProto.descriptor.getMessageTypes.get(7)
   def messageCompanionForField(__field: _root_.com.google.protobuf.Descriptors.FieldDescriptor): _root_.com.trueaccord.scalapb.GeneratedMessageCompanion[_] = throw new MatchError(__field)
   def enumCompanionForField(__field: _root_.com.google.protobuf.Descriptors.FieldDescriptor): _root_.com.trueaccord.scalapb.GeneratedEnumCompanion[_] = throw new MatchError(__field)
   lazy val defaultInstance = com.winry.mahjong.message.TsumoReq(
