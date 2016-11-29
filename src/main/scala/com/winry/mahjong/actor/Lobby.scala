@@ -1,10 +1,11 @@
 package com.winry.mahjong.actor
 
-import akka.actor.Actor
+import akka.actor.{Actor, ActorSelection}
+import com.winry.mahjong.actor.GameController.StartGame
 import com.winry.mahjong.actor.Lobby.{Login, Ready}
-import com.winry.mahjong.message.{GameStartResp, LoginReq, LoginResp}
+import com.winry.mahjong.message.{LoginReq, LoginResp}
 import com.winry.mahjong.service.UserService
-import com.winry.mahjong.{Game, Session, User}
+import com.winry.mahjong.{Session, User}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -14,10 +15,9 @@ import scala.collection.mutable.ListBuffer
   */
 class Lobby extends Actor {
 
-  private val sessionMap = mutable.Map.empty[Session, User]
-
-  val games: ListBuffer[Game] = ListBuffer.empty
+  val sessionMap: mutable.Map[Session, User] = mutable.Map.empty
   val readyUsers: ListBuffer[Session] = ListBuffer.empty
+  val gameController: ActorSelection = context.actorSelection("akka://server/user/game")
 
   override def receive: Receive = {
     case Login(session, loginReq) => login(session, loginReq)
@@ -36,10 +36,7 @@ class Lobby extends Actor {
     readyUsers += session
     if (readyUsers.size == 4) {
       val users = readyUsers.map(s => UserService.findUserById(s.userId)).toList
-      val game = new Game(users)
-      games += game
-      //todo set game start resp fields
-      readyUsers.foreach(_.send(GameStartResp))
+      gameController ! StartGame(readyUsers.toList, users)
       readyUsers.clear()
     }
   }

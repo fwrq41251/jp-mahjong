@@ -48,4 +48,14 @@ class Player(id: Long) {
   def deal(mahjong: Mahjong): Unit = {
     hands.push(mahjong)
   }
+
+  /**
+    * 立直
+    *
+    * @param toDiscard
+    */
+  def reach(toDiscard: Int): Unit = {
+    discard(toDiscard)
+    hands.isReach = true
+  }
 }

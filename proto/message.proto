@@ -7,8 +7,10 @@ option java_package = "com.winry.mahjong";
 message PacketMSG {
     oneof msg {
         LoginReq loginReq = 1;
-        LoginResp loginResp = 2;
-        ReadyReq readyReq = 3;
+        ReadyReq readyReq = 2;
+        ReachReq reachReq = 3;
+        TsumoReq tsumoReq = 4;
+        DiscardReq discardReq = 5;
     }
 }
 
@@ -27,4 +29,21 @@ message ReadyReq {
 
 message GameStartResp {
 
+}
+
+message ReachReq {
+    int64 gameId = 1;
+    int64 userId = 2;
+    int32 toDiscard = 3;
+}
+
+message TsumoReq {
+    int64 gameId = 1;
+    int64 userId = 2;
+}
+
+message DiscardReq {
+    int64 gameId = 1;
+    int64 userId = 2;
+    int32 toDiscard = 3;
 }

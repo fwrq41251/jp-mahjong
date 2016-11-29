@@ -1,5 +1,6 @@
 package com.winry.mahjong
 
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
@@ -17,6 +18,8 @@ class Game(users: List[User]) {
     * 玩家
     */
   val players: ListBuffer[Player] = Random.shuffle(users.map(u => new Player(u.id))).to[ListBuffer]
+
+  val playerMap: mutable.Map[Long, Player] = mutable.Map.empty
 
   /**
     * 用户
@@ -66,6 +69,12 @@ class Game(users: List[User]) {
       players -= oya
       players += oya
     }
+  }
+
+  def reach(userId: Long, toDiscard: Int): Unit = {
+    val player = playerMap(userId)
+    player.reach(toDiscard)
+    reachbou += 1
   }
 
 }
