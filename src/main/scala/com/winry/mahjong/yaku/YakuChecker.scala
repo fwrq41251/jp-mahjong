@@ -1,9 +1,9 @@
 package com.winry.mahjong.yaku
 
 import com.winry.mahjong.Types.Word
-import com.winry.mahjong.{Game, Mahjong, WinHands}
 import com.winry.mahjong.checker.{ChiChecker, ConsecutiveChecker, PonChecker}
-import com.winry.mahjong.melds.{Chi, Pon}
+import com.winry.mahjong.melds.{Chi, Eye, Pon}
+import com.winry.mahjong.{Game, Mahjong, Types, WinHands}
 
 /**
   * Created by congzhou on 8/1/2016.
@@ -72,6 +72,7 @@ class PinfuChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game)
         case _ => hands.chis.contains(new Chi(win.typ, win.num - 2))
       }
     }
+
     hands.isClosed && hands.chis.size == 4 && hands.eye.isNoValue && isRyman
   }
 }
@@ -222,6 +223,7 @@ class YakuhaiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, gam
       val r = hands.pons.contains(new Pon(List(Mahjong(Word, num))))
       if (num == 7) r else r && satisfy(num + 1)
     }
+
     satisfy(5)
   }
 }
@@ -302,6 +304,48 @@ class ShousangenChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
   override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
-    hands.pons.contains(new Pon(Word, 5)) && hands.pons.contains(new Pon(Word, 6)) && hands.pons.contains(new Pon(Word, 7))
+    val j = Mahjong(Types.Word, 5)
+    val h = Mahjong(Types.Word, 6)
+    val p = Mahjong(Types.Word, 7)
+    val shousangen = List((List(j, h), p), (List(j, p), h), (List(h, p), j))
+    shousangen.exists(s => hands.pons.contains(new Pon(List(s._1.head))) && hands.pons.contains(new Pon(List(s._1(1))
+    )) && hands.eye == new Eye(List(s._2)))
+  }
+}
+
+/**
+  * 混一色
+  *
+  * @param hands
+  * @param game
+  */
+class HoniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override def value: Int = ???
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    val typ = hands.eye.typ
+    hands.chis.forall(c => c.typ == typ || c.typ == Types.Word) && hands.pons.forall(c => c.typ == typ || c.typ ==
+      Types.Word)
+  }
+}
+
+/**
+  * 清一色
+  *
+  * @param hands
+  * @param game
+  */
+class ChiniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override def value: Int = ???
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    val typ = hands.eye.typ
+    hands.chis.forall(_.typ == typ) && hands.pons.forall(_.typ == typ)
   }
 }

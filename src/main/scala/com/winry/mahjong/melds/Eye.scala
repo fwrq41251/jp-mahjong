@@ -11,6 +11,10 @@ class Eye(mahjongs: List[Mahjong]) extends Meld with PairsChecker {
 
   checkPair(mahjongs)
 
+  def this(typ: Type, num: Int) = {
+    this(List(new Mahjong(typ, num)))
+  }
+
   override val num: Int = mahjongs.head.num
   override val typ: Type = mahjongs.head.typ
 
