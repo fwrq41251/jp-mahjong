@@ -51,12 +51,24 @@ class Hands(mahjongs: List[Mahjong]) {
   }
 
   def pon(mahjong: Mahjong): Unit = {
-    pons += new Pon(List(mahjong, mahjong, mahjong), false)
+    pons += new Pon(List(mahjong), false)
     freeMahjongs -= mahjong
     freeMahjongs -= mahjong
   }
 
-  def kan(mahjong: Mahjong): Unit = ???
+  def canKan(mahjong: Mahjong): Boolean = {
+    pons.contains(new Pon(List(mahjong))) || freeMahjongs.count(_ == mahjong) >= 3
+  }
+
+  def kan(mahjong: Mahjong, isClosed: Boolean): Unit = {
+    kans += new Kan(List(mahjong), isClosed)
+    if (freeMahjongs.count(_ == mahjong) >= 3) {
+      for (_ <- 1 to 3) {
+        freeMahjongs -= mahjong
+      }
+    }
+    if (this.isClosed && !isClosed) this.isClosed = false
+  }
 
   def getDistance: Int = {
     new DistanceCounter(this).countDistance

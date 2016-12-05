@@ -12,13 +12,17 @@ class Pon(mahjongs: List[Mahjong]) extends Triple with TriplesChecker with Close
   override val num: Int = mahjongs.head.num
   override val typ: Type = mahjongs.head.typ
 
-  def this(chi: List[Mahjong], closed: Boolean) = {
-    this(chi)
+  def this(pon: List[Mahjong], closed: Boolean) = {
+    this(pon)
     isClosed = closed
   }
 
   def this(typ: Type, num: Int) = {
     this(List(new Mahjong(typ, num)))
+  }
+
+  def this(mahjong: Mahjong) = {
+    this(List(mahjong))
   }
 
   checkTriple(mahjongs)

@@ -11,7 +11,8 @@ import scala.collection.mutable.ListBuffer
   */
 class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecker {
 
-  def getMelds[A](toCount: List[CountMahjong], predicate: List[Mahjong] => Boolean, apply: List[Mahjong] => A): List[A] = {
+  def getMelds[A](toCount: List[CountMahjong], predicate: List[Mahjong] => Boolean, apply: List[Mahjong] => A):
+  List[A] = {
     val buffer = ListBuffer.empty[A]
     var temp = toCount
     while (temp.size >= 3) {
@@ -36,9 +37,11 @@ class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecke
   //fixme temp variable, how to release this reference?
   private val toCount: List[CountMahjong] = hands.freeMahjongs.toList.map(new CountMahjong(_))
 
-  val chis: List[Chi] = getChis
+  val chis: List[Chi] = hands.chis.toList ::: getChis
 
-  val pons: List[Pon] = getMelds(toCount.filter(!_.isCount), isPon, new Pon(_))
+  val pons: List[Pon] = hands.pons.toList ::: getMelds(toCount.filter(!_.isCount), isPon, new Pon(_))
+
+  val kans: List[Kan] = hands.kans.toList
 
   val eye: Eye = {
     val list = toCount.filter(m => !m.isCount && m != win).groupBy(identity).filter(t => t._2.size == 2).values

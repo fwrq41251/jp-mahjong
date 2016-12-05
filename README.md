@@ -2,4 +2,6 @@
 play with japanese mahjong and scala.
 ---
 ###todo
-kans yaku
+more yaku
+土田 hands
+point counter
