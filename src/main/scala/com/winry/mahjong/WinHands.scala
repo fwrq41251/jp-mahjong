@@ -46,7 +46,7 @@ class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecke
   val eye: Eye = {
     val list = toCount.filter(m => !m.isCount && m != win).groupBy(identity).filter(t => t._2.size == 2).values
     if (list.isEmpty) {
-      new Eye(List(win, win))
+      new Eye(win)
     } else {
       list.head.foreach(_.isCount = true)
       new Eye(list.head)
@@ -56,5 +56,18 @@ class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecke
   val isReach: Boolean = hands.isReach
 
   val isClosed: Boolean = hands.isClosed
+
+  def isRyanmen: Boolean = {
+    win.num match {
+      case it if 1 to 3 contains it => hands.chis.contains(new Chi(win))
+      case it if 4 to 6 contains it => hands.chis.contains(new Chi(win)) || hands.chis.contains(new Chi(win
+        .typ, it - 2))
+      case _ => hands.chis.contains(new Chi(win.typ, win.num - 2))
+    }
+  }
+
+  def isTanki: Boolean = {
+    eye == new Eye(win)
+  }
 
 }

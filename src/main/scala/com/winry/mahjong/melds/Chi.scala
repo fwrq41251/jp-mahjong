@@ -23,6 +23,10 @@ class Chi(mahjongs: List[Mahjong]) extends Triple with Closed {
     this(List(new Mahjong(typ, num)))
   }
 
+  def this(mahjong: Mahjong) = {
+    this(List(mahjong))
+  }
+
   /**
     * 是否带幺九
     *

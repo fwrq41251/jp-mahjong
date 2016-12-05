@@ -57,7 +57,7 @@ class Hands(mahjongs: List[Mahjong]) {
   }
 
   def canKan(mahjong: Mahjong): Boolean = {
-    pons.contains(new Pon(List(mahjong))) || freeMahjongs.count(_ == mahjong) >= 3
+    pons.contains(new Pon(mahjong)) || freeMahjongs.count(_ == mahjong) >= 3
   }
 
   def kan(mahjong: Mahjong, isClosed: Boolean): Unit = {

@@ -63,17 +63,7 @@ class PinfuChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game)
   override def value: Int = 1
 
   override def satisfy(): Boolean = {
-    def isRyman: Boolean = {
-      val win: Mahjong = hands.win
-      win.num match {
-        case it if 1 to 3 contains it => hands.chis.contains(new Chi(List(win)))
-        case it if 4 to 6 contains it => hands.chis.contains(new Chi(List(win))) || hands.chis.contains(new Chi(win
-          .typ, it - 2))
-        case _ => hands.chis.contains(new Chi(win.typ, win.num - 2))
-      }
-    }
-
-    hands.isClosed && hands.chis.size == 4 && hands.eye.isNoValue && isRyman
+    hands.isClosed && hands.chis.size == 4 && hands.eye.isNoValue && hands.isRyanmen
   }
 }
 
@@ -315,8 +305,8 @@ class ShousangenChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
     val p = Mahjong(Types.Word, 7)
     val shousangen = List((List(j, h), p), (List(j, p), h), (List(h, p), j))
     val pons = hands.pons ::: hands.kans.map(_.toPon)
-    shousangen.exists(s => pons.contains(new Pon(List(s._1.head))) && hands.pons.contains(new Pon(List(s._1(1))
-    )) && hands.eye == new Eye(List(s._2)))
+    shousangen.exists(s => pons.contains(new Pon(s._1.head)) && hands.pons.contains(new Pon(s._1(1)
+    )) && hands.eye == new Eye(s._2))
   }
 }
 
