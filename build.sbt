@@ -10,5 +10,6 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" % "akka-actor_2.11" % "2.4.12",
   "com.typesafe.akka" % "akka-slf4j_2.11" % "2.4.12",
   "com.trueaccord.scalapb" % "scalapb-runtime_2.11" % "0.5.45",
+  "com.google.guava" % "guava" % "20.0",
   "junit" % "junit" % "4.12" % Test
 )

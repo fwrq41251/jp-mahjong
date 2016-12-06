@@ -320,7 +320,7 @@ class HoniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, ga
 
   override def value: Int = ???
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     val typ = hands.eye.typ
@@ -339,7 +339,7 @@ class ChiniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
 
   override def value: Int = ???
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     val typ = hands.eye.typ

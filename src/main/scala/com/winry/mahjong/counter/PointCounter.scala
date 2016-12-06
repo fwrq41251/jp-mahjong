@@ -1,6 +1,10 @@
 package com.winry.mahjong.counter
 
+import com.google.common.base.{Charsets, Splitter}
+import com.google.common.io.Resources
 import com.winry.mahjong.WinHands
+
+import scala.collection.mutable
 
 /**
   * Created by User on 12/5/2016.
@@ -9,8 +13,24 @@ object PointCounter {
 
   case class PointKey(fu: Int, han: Int, isOya: Boolean)
 
-  //todo init map
-  val pointMap: Map[PointKey, Int] = Map.empty
+  /**
+    * key -> point
+    */
+  val pointMap: mutable.Map[PointKey, Int] = {
+    val map = mutable.Map.empty[PointKey, Int]
+    val url = Resources.getResource("PointTable");
+    val lines = Resources.toString(url, Charsets.UTF_8).split("\n").tail
+    lines.foreach(line => {
+      val iterator = Splitter.on(' ').trimResults().omitEmptyStrings().split(line).iterator();
+      val han = iterator.next().toInt
+      val fu = iterator.next().toInt
+      val isOya = iterator.next().toBoolean
+      val point = iterator.next().toInt
+      pointMap += PointKey(fu, han, isOya) -> point
+    })
+    map
+  }
+
 
   def caculatePoint(fu: Int, han: Int, isOya: Boolean): Int = {
     val cHan = if (han >= 13) 13 else han
