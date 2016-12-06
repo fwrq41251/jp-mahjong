@@ -26,7 +26,7 @@ object PointCounter {
       val fu = iterator.next().toInt
       val isOya = iterator.next().toBoolean
       val point = iterator.next().toInt
-      pointMap += PointKey(fu, han, isOya) -> point
+      map += PointKey(fu, han, isOya) -> point
     })
     map
   }
@@ -39,30 +39,32 @@ object PointCounter {
   }
 
   def countFu(hands: WinHands): Int = {
-    val ponsFu = hands.pons.foldLeft(0)((z, i) => {
-      val fu = if (i.isClosed) {
-        if (i.isTaiYao) 8 else 4
-      } else {
-        if (i.isTaiYao) 4 else 2
+    if (hands.isChītoitsu) 25 else {
+      val ponsFu = hands.pons.foldLeft(0)((z, i) => {
+        val fu = if (i.isClosed) {
+          if (i.isTaiYao) 8 else 4
+        } else {
+          if (i.isTaiYao) 4 else 2
+        }
+        z + fu
+      })
+      val kansFu = hands.kans.foldLeft(0)((z, i) => {
+        val fu = if (i.isClosed) {
+          if (i.isTaiYao) 32 else 16
+        } else {
+          if (i.isTaiYao) 16 else 8
+        }
+        z + fu
+      })
+      val waitsFu = {
+        if (hands.isTanki) {
+          2
+        } else {
+          if (hands.isRyanmen) 0 else 2
+        }
       }
-      z + fu
-    })
-    val kansFu = hands.kans.foldLeft(0)((z, i) => {
-      val fu = if (i.isClosed) {
-        if (i.isTaiYao) 32 else 16
-      } else {
-        if (i.isTaiYao) 16 else 8
-      }
-      z + fu
-    })
-    val waitsFu = {
-      if (hands.isTanki) {
-        2
-      } else {
-        if (hands.isRyanmen) 0 else 2
-      }
+      20 + ponsFu + kansFu + waitsFu
     }
-    20 + ponsFu + kansFu + waitsFu
   }
 
 }

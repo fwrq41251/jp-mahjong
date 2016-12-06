@@ -78,7 +78,7 @@ class IipeikouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, ga
 
   override def satisfy(): Boolean = {
     // convert chi list to set, if there is any duplicate element, set size will be small than list size.
-    hands.isClosed && hands.chis.toSet.size != hands.chis.size
+    !hands.isChītoitsu && hands.isClosed && hands.chis.toSet.size != hands.chis.size
   }
 }
 
@@ -198,7 +198,8 @@ class TanyaochuuChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
   override val next = None
 
   override def satisfy(): Boolean = {
-    hands.chis.forall(!_.isTaiYao) && hands.pons.forall(!_.isTaiYao) && !hands.eye.isTaiYao
+    hands.chis.forall(!_.isTaiYao) && hands.pons.forall(!_.isTaiYao) && !hands.eye.isTaiYao && hands.eyes.forall(!_
+      .isTaiYao)
   }
 }
 
@@ -247,8 +248,8 @@ class ChantaiyaoChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
   override val next = None
 
   override def satisfy(): Boolean = {
-    hands.chis.forall(_.isTaiYao) && hands.pons.forall(_.isTaiYao) && hands.eye.isTaiYao && hands.kans.forall(_
-      .isTaiYao)
+    !hands.isChītoitsu && hands.chis.forall(_.isTaiYao) && hands.pons.forall(_.isTaiYao) && hands.eye.isTaiYao &&
+      hands.kans.forall(_.isTaiYao)
   }
 }
 
@@ -265,8 +266,8 @@ class JunchantaiyaoChecker(hands: WinHands, game: Game) extends CompoundYakuChec
   override val next: Option[YakuChecker] = Some(new ChantaiyaoChecker(hands, game))
 
   override def satisfy(): Boolean = {
-    hands.chis.forall(_.isTaiYao) && hands.pons.forall(_.isJunTaiYao) && hands.eye.isJunTaiYao && hands.kans.forall(_
-      .isJunTaiYao)
+    !hands.isChītoitsu && hands.chis.forall(_.isTaiYao) && hands.pons.forall(_.isJunTaiYao) && hands.eye.isJunTaiYao &&
+      hands.kans.forall(_.isJunTaiYao)
   }
 }
 
@@ -283,7 +284,11 @@ class HonroutouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
   override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
-    hands.chis.isEmpty && hands.pons.forall(_.isTaiYao) && hands.eye.isTaiYao && hands.kans.forall(_.isTaiYao)
+    if (hands.isChītoitsu) {
+      hands.eyes.forall(_.isTaiYao)
+    } else {
+      hands.chis.isEmpty && hands.pons.forall(_.isTaiYao) && hands.eye.isTaiYao && hands.kans.forall(_.isTaiYao)
+    }
   }
 }
 
@@ -323,9 +328,14 @@ class HoniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, ga
   override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
-    val typ = hands.eye.typ
-    hands.chis.forall(c => c.typ == typ || c.typ == Types.Word) && hands.pons.forall(c => c.typ == typ || c.typ ==
-      Types.Word) && hands.kans.forall(c => c.typ == typ || c.typ == Types.Word)
+    if (hands.isChītoitsu) {
+      val typ = hands.eyes.head.typ
+      hands.eyes.tail.forall(e => e.typ == typ || e.typ == Types.Word)
+    } else {
+      val typ = hands.eye.typ
+      hands.chis.forall(c => c.typ == typ || c.typ == Types.Word) && hands.pons.forall(c => c.typ == typ || c.typ ==
+        Types.Word) && hands.kans.forall(c => c.typ == typ || c.typ == Types.Word)
+    }
   }
 }
 
@@ -342,7 +352,12 @@ class ChiniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
   override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
-    val typ = hands.eye.typ
-    hands.chis.forall(_.typ == typ) && hands.pons.forall(_.typ == typ) && hands.kans.forall(_.typ == typ)
+    if (hands.isChītoitsu) {
+      val typ = hands.eyes.head.typ
+      hands.eyes.tail.forall(e => e.typ == typ)
+    } else {
+      val typ = hands.eye.typ
+      hands.chis.forall(_.typ == typ) && hands.pons.forall(_.typ == typ) && hands.kans.forall(_.typ == typ)
+    }
   }
 }

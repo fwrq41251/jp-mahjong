@@ -12,14 +12,17 @@ import scala.util.Random
 class Yama {
 
   var index = 0
-  var linshanIndex = 128
+  var linshanIndex = 136
+  var indicatorIndex = 132
   val mahjongs: List[Mahjong] = {
     var buffer = ListBuffer.empty[Mahjong]
+
     def appendDigits(typ: Type) = {
       for (i <- 1 to 9; _ <- 1 to 4) {
         buffer += new Mahjong(typ, i)
       }
     }
+
     appendDigits(Wan)
     appendDigits(Pin)
     appendDigits(Sou)
@@ -28,6 +31,7 @@ class Yama {
     }
     Random.shuffle(buffer.toList)
   }
+  var indicators: List[Mahjong] = List(mahjongs(indicatorIndex))
 
   def take(): Mahjong = {
     if (index > 122) {
@@ -39,11 +43,19 @@ class Yama {
     }
   }
 
+  /**
+    * 岭上
+    *
+    * @return
+    */
   def rinshan(): Mahjong = {
     val toTake = mahjongs(linshanIndex)
-    linshanIndex += 2
+    linshanIndex -= 1
+    indicatorIndex -= 2
+    indicators = indicators ::: List(mahjongs(indicatorIndex))
     toTake
   }
+
 
   override def toString = s"Yama($mahjongs)"
 }

@@ -1,11 +1,11 @@
 package com.winry
 
 import com.winry.mahjong.Types.Pin
-import com.winry.mahjong.yaku.MyChecker
 import com.winry.mahjong._
 import com.winry.mahjong.counter.PointCounter
 import com.winry.mahjong.util.HandsReader
-import org.junit.Test
+import com.winry.mahjong.yaku.MyChecker
+import org.junit.{Assert, Test}
 
 
 /**
@@ -21,13 +21,8 @@ class HandsTest {
 
   @Test
   def getDistanceTest(): Unit = {
-    val raw = "22221p778899s33z"
-    println(HandsReader.toHands(raw).getDistance)
-  }
-
-  @Test
-  def toWinHandsTest(): Unit = {
-    val raw = "122223p778899s33z"
+    val raw = "22241p778899s33z"
+    Assert.assertEquals(HandsReader.toHands(raw).getDistance, 1)
   }
 
   @Test
@@ -38,19 +33,14 @@ class HandsTest {
   }
 
   @Test
-  def nilTest(): Unit = {
-    print(Nil.size)
-  }
-
-  @Test
   def yamaTest(): Unit = {
     val yama = new Yama()
-    println(yama.mahjongs.size)
+    Assert.assertEquals(yama.mahjongs.size, 136)
   }
 
   @Test
-  def initPointMapTest(): Unit = {
-    PointCounter.pointMap.foreach(println(_))
+  def PointCounterTest(): Unit = {
+    Assert.assertEquals(PointCounter.caculatePoint(30, 1, isOya = true), 1500)
   }
 
 }
