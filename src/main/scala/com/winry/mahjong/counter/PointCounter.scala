@@ -18,10 +18,10 @@ object PointCounter {
     */
   val pointMap: mutable.Map[PointKey, Int] = {
     val map = mutable.Map.empty[PointKey, Int]
-    val url = Resources.getResource("PointTable");
+    val url = Resources.getResource("PointTable")
     val lines = Resources.toString(url, Charsets.UTF_8).split("\n").tail
     lines.foreach(line => {
-      val iterator = Splitter.on(' ').trimResults().omitEmptyStrings().split(line).iterator();
+      val iterator = Splitter.on(' ').trimResults().omitEmptyStrings().split(line).iterator()
       val han = iterator.next().toInt
       val fu = iterator.next().toInt
       val isOya = iterator.next().toBoolean

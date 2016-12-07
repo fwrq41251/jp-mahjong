@@ -1,12 +1,16 @@
 package com.winry.mahjong.actor
 
-import akka.actor.{Actor, ActorLogging, ActorSelection, Props}
+import java.util.concurrent.TimeUnit
+
+import akka.actor.{Actor, ActorLogging, ActorSelection, Cancellable, PoisonPill, Props}
 import akka.io.Tcp.{PeerClosed, Received}
 import com.winry.mahjong.Session
 import com.winry.mahjong.actor.GameController.{Discard, Reach, Tsumo}
 import com.winry.mahjong.actor.Lobby.{Login, Ready}
 import com.winry.mahjong.message.PacketMSG
 import com.winry.mahjong.message.PacketMSG.Msg
+
+import scala.concurrent.duration.Duration
 
 /**
   * Every connection has a separated dispatcher that holds a unique session.
@@ -15,10 +19,16 @@ class Dispatcher(val session: Session) extends Actor with ActorLogging {
 
   val lobby: ActorSelection = context.actorSelection("akka://server/user/lobby")
   val gameController: ActorSelection = context.actorSelection("akka://server/user/game")
+  var killSelf: Cancellable = startSchedule()
 
+  private def startSchedule(): Cancellable = {
+    import context.dispatcher
+    context.system.scheduler.scheduleOnce(Duration.create(5, TimeUnit.SECONDS), self, PoisonPill)
+  }
 
   override def receive: Receive = {
     case Received(data) =>
+      restartSchedule
       log.debug("receive:" + data)
       val packetMessage = PacketMSG.parseFrom(data.toArray)
       packetMessage.msg match {
@@ -30,6 +40,11 @@ class Dispatcher(val session: Session) extends Actor with ActorLogging {
         case _ =>
       }
     case PeerClosed => context stop self
+  }
+
+  private def restartSchedule = {
+    killSelf.cancel()
+    killSelf = startSchedule()
   }
 }
 

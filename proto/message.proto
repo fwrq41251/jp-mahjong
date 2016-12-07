@@ -11,6 +11,7 @@ message PacketMSG {
         ReachReq reachReq = 3;
         TsumoReq tsumoReq = 4;
         DiscardReq discardReq = 5;
+        Heartbeat heartbeat = 6;
     }
 }
 
@@ -49,4 +50,8 @@ message DiscardReq {
     int64 gameId = 1;
     int64 userId = 2;
     int32 toDiscard = 3;
+}
+
+message Heartbeat {
+
 }

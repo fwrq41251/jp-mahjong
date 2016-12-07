@@ -20,6 +20,7 @@ final case class PacketMSG(
       if (msg.reachReq.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.reachReq.get.serializedSize) + msg.reachReq.get.serializedSize }
       if (msg.tsumoReq.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.tsumoReq.get.serializedSize) + msg.tsumoReq.get.serializedSize }
       if (msg.discardReq.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.discardReq.get.serializedSize) + msg.discardReq.get.serializedSize }
+      if (msg.heartbeat.isDefined) { __size += 1 + _root_.com.google.protobuf.CodedOutputStream.computeUInt32SizeNoTag(msg.heartbeat.get.serializedSize) + msg.heartbeat.get.serializedSize }
       __size
     }
     final override def serializedSize: Int = {
@@ -56,6 +57,11 @@ final case class PacketMSG(
         _output__.writeUInt32NoTag(__v.serializedSize)
         __v.writeTo(_output__)
       };
+      msg.heartbeat.foreach { __v =>
+        _output__.writeTag(6, 2)
+        _output__.writeUInt32NoTag(__v.serializedSize)
+        __v.writeTo(_output__)
+      };
     }
     def mergeFrom(`_input__`: _root_.com.google.protobuf.CodedInputStream): com.winry.mahjong.message.PacketMSG = {
       var __msg = this.msg
@@ -74,6 +80,8 @@ final case class PacketMSG(
             __msg = com.winry.mahjong.message.PacketMSG.Msg.TsumoReq(_root_.com.trueaccord.scalapb.LiteParser.readMessage(_input__, msg.tsumoReq.getOrElse(com.winry.mahjong.message.TsumoReq.defaultInstance)))
           case 42 =>
             __msg = com.winry.mahjong.message.PacketMSG.Msg.DiscardReq(_root_.com.trueaccord.scalapb.LiteParser.readMessage(_input__, msg.discardReq.getOrElse(com.winry.mahjong.message.DiscardReq.defaultInstance)))
+          case 50 =>
+            __msg = com.winry.mahjong.message.PacketMSG.Msg.Heartbeat(_root_.com.trueaccord.scalapb.LiteParser.readMessage(_input__, msg.heartbeat.getOrElse(com.winry.mahjong.message.Heartbeat.defaultInstance)))
           case tag => _input__.skipField(tag)
         }
       }
@@ -91,6 +99,8 @@ final case class PacketMSG(
     def withTsumoReq(__v: com.winry.mahjong.message.TsumoReq): PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.TsumoReq(__v))
     def getDiscardReq: com.winry.mahjong.message.DiscardReq = msg.discardReq.getOrElse(com.winry.mahjong.message.DiscardReq.defaultInstance)
     def withDiscardReq(__v: com.winry.mahjong.message.DiscardReq): PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.DiscardReq(__v))
+    def getHeartbeat: com.winry.mahjong.message.Heartbeat = msg.heartbeat.getOrElse(com.winry.mahjong.message.Heartbeat.defaultInstance)
+    def withHeartbeat(__v: com.winry.mahjong.message.Heartbeat): PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.Heartbeat(__v))
     def clearMsg: PacketMSG = copy(msg = com.winry.mahjong.message.PacketMSG.Msg.Empty)
     def withMsg(__v: com.winry.mahjong.message.PacketMSG.Msg): PacketMSG = copy(msg = __v)
     def getField(__field: _root_.com.google.protobuf.Descriptors.FieldDescriptor): scala.Any = {
@@ -100,6 +110,7 @@ final case class PacketMSG(
         case 3 => msg.reachReq.getOrElse(null)
         case 4 => msg.tsumoReq.getOrElse(null)
         case 5 => msg.discardReq.getOrElse(null)
+        case 6 => msg.heartbeat.getOrElse(null)
       }
     }
     override def toString: String = _root_.com.trueaccord.scalapb.TextFormat.printToUnicodeString(this)
@@ -116,7 +127,8 @@ object PacketMSG extends com.trueaccord.scalapb.GeneratedMessageCompanion[com.wi
 __fieldsMap.get(__fields.get(1)).asInstanceOf[scala.Option[com.winry.mahjong.message.ReadyReq]].map(com.winry.mahjong.message.PacketMSG.Msg.ReadyReq(_)) orElse
 __fieldsMap.get(__fields.get(2)).asInstanceOf[scala.Option[com.winry.mahjong.message.ReachReq]].map(com.winry.mahjong.message.PacketMSG.Msg.ReachReq(_)) orElse
 __fieldsMap.get(__fields.get(3)).asInstanceOf[scala.Option[com.winry.mahjong.message.TsumoReq]].map(com.winry.mahjong.message.PacketMSG.Msg.TsumoReq(_)) orElse
-__fieldsMap.get(__fields.get(4)).asInstanceOf[scala.Option[com.winry.mahjong.message.DiscardReq]].map(com.winry.mahjong.message.PacketMSG.Msg.DiscardReq(_)) getOrElse com.winry.mahjong.message.PacketMSG.Msg.Empty
+__fieldsMap.get(__fields.get(4)).asInstanceOf[scala.Option[com.winry.mahjong.message.DiscardReq]].map(com.winry.mahjong.message.PacketMSG.Msg.DiscardReq(_)) orElse
+__fieldsMap.get(__fields.get(5)).asInstanceOf[scala.Option[com.winry.mahjong.message.Heartbeat]].map(com.winry.mahjong.message.PacketMSG.Msg.Heartbeat(_)) getOrElse com.winry.mahjong.message.PacketMSG.Msg.Empty
     )
   }
   def descriptor: _root_.com.google.protobuf.Descriptors.Descriptor = MessageProto.descriptor.getMessageTypes.get(0)
@@ -129,6 +141,7 @@ __fieldsMap.get(__fields.get(4)).asInstanceOf[scala.Option[com.winry.mahjong.mes
       case 3 => __out = com.winry.mahjong.message.ReachReq
       case 4 => __out = com.winry.mahjong.message.TsumoReq
       case 5 => __out = com.winry.mahjong.message.DiscardReq
+      case 6 => __out = com.winry.mahjong.message.Heartbeat
     }
   __out
   }
@@ -144,11 +157,13 @@ __fieldsMap.get(__fields.get(4)).asInstanceOf[scala.Option[com.winry.mahjong.mes
     def isReachReq: Boolean = false
     def isTsumoReq: Boolean = false
     def isDiscardReq: Boolean = false
+    def isHeartbeat: Boolean = false
     def loginReq: scala.Option[com.winry.mahjong.message.LoginReq] = None
     def readyReq: scala.Option[com.winry.mahjong.message.ReadyReq] = None
     def reachReq: scala.Option[com.winry.mahjong.message.ReachReq] = None
     def tsumoReq: scala.Option[com.winry.mahjong.message.TsumoReq] = None
     def discardReq: scala.Option[com.winry.mahjong.message.DiscardReq] = None
+    def heartbeat: scala.Option[com.winry.mahjong.message.Heartbeat] = None
   }
   object Msg extends {
     @SerialVersionUID(0L)
@@ -188,6 +203,12 @@ __fieldsMap.get(__fields.get(4)).asInstanceOf[scala.Option[com.winry.mahjong.mes
       override def discardReq: scala.Option[com.winry.mahjong.message.DiscardReq] = Some(value)
       override def number: Int = 5
     }
+    @SerialVersionUID(0L)
+    case class Heartbeat(value: com.winry.mahjong.message.Heartbeat) extends com.winry.mahjong.message.PacketMSG.Msg {
+      override def isHeartbeat: Boolean = true
+      override def heartbeat: scala.Option[com.winry.mahjong.message.Heartbeat] = Some(value)
+      override def number: Int = 6
+    }
   }
   implicit class PacketMSGLens[UpperPB](_l: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.PacketMSG]) extends _root_.com.trueaccord.lenses.ObjectLens[UpperPB, com.winry.mahjong.message.PacketMSG](_l) {
     def loginReq: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.LoginReq] = field(_.getLoginReq)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.LoginReq(f_)))
@@ -195,6 +216,7 @@ __fieldsMap.get(__fields.get(4)).asInstanceOf[scala.Option[com.winry.mahjong.mes
     def reachReq: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.ReachReq] = field(_.getReachReq)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.ReachReq(f_)))
     def tsumoReq: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.TsumoReq] = field(_.getTsumoReq)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.TsumoReq(f_)))
     def discardReq: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.DiscardReq] = field(_.getDiscardReq)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.DiscardReq(f_)))
+    def heartbeat: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.Heartbeat] = field(_.getHeartbeat)((c_, f_) => c_.copy(msg = com.winry.mahjong.message.PacketMSG.Msg.Heartbeat(f_)))
     def msg: _root_.com.trueaccord.lenses.Lens[UpperPB, com.winry.mahjong.message.PacketMSG.Msg] = field(_.msg)((c_, f_) => c_.copy(msg = f_))
   }
   final val LOGINREQ_FIELD_NUMBER = 1
@@ -202,4 +224,5 @@ __fieldsMap.get(__fields.get(4)).asInstanceOf[scala.Option[com.winry.mahjong.mes
   final val REACHREQ_FIELD_NUMBER = 3
   final val TSUMOREQ_FIELD_NUMBER = 4
   final val DISCARDREQ_FIELD_NUMBER = 5
+  final val HEARTBEAT_FIELD_NUMBER = 6
 }
