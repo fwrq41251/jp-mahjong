@@ -34,5 +34,10 @@ object Starter extends App {
   val connectString = zkConfig.getString("host-port")
   val path = zkConfig.getString("path")
   val zk = new ZooKeeper(connectString, 3000, new ZookeeperWatcher)
-  zk.create(path, (InetAddress.getLocalHost + ":" + port).getBytes("utf-8"), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL)
+  zk.exists(path, false) match {
+    case null => zk.create(path, null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
+    case _ =>
+  }
+  zk.create(path + "/" + "server", (InetAddress.getLocalHost.getHostAddress + ":" + port).getBytes("utf-8"), Ids.OPEN_ACL_UNSAFE,
+    CreateMode.EPHEMERAL_SEQUENTIAL)
 }
