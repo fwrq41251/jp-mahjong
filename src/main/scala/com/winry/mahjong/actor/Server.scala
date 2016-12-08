@@ -1,13 +1,10 @@
 package com.winry.mahjong.actor
 
 import java.net.InetSocketAddress
-import java.util.concurrent.TimeUnit
 
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.io.{IO, Tcp}
 import com.winry.mahjong.Session
-
-import scala.concurrent.duration.Duration
 
 /**
   * One app only have one Server actor.
@@ -15,12 +12,6 @@ import scala.concurrent.duration.Duration
 class Server(host: String, port: Int) extends Actor with ActorLogging {
 
   var sessionCount = 1L
-
-  import context.dispatcher
-
-  context.system.scheduler.schedule(Duration.Zero, Duration.create(10, TimeUnit.SECONDS), new Runnable {
-    override def run(): Unit = log.info("active session:" + context.children.size)
-  })
 
   import Tcp._
   import context.system
