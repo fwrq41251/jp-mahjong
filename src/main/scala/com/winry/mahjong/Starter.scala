@@ -22,6 +22,7 @@ object Starter extends App {
   val port = serverConfig.getInt("port")
   val server = actorSystem.actorOf(Server.props(host, port), "front")
   val lobby = actorSystem.actorOf(Props[Lobby], "lobby")
+  val gameCenter = actorSystem.actorOf(Props[Lobby], "game")
 
   class ZookeeperWatcher extends Watcher {
 

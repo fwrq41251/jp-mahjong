@@ -17,7 +17,7 @@ import com.winry.mahjong.message.PacketMSG.Msg
 class Dispatcher(val session: Session) extends Actor with ActorLogging {
 
   val lobby: ActorSelection = context.actorSelection("akka://server/user/lobby")
-  val gameController: ActorSelection = context.actorSelection("akka://server/user/game")
+  val gameCenter: ActorSelection = context.actorSelection("akka://server/user/game")
   val calender: Calendar = Calendar.getInstance()
   var lastOperateTime: Date = calender.getTime
   val timeout: Int = 15 * 60 * 1000
@@ -30,9 +30,9 @@ class Dispatcher(val session: Session) extends Actor with ActorLogging {
       packetMessage.msg match {
         case Msg.LoginReq(l) => lobby ! Login(session, l)
         case Msg.ReadyReq(_) => lobby ! Ready(session)
-        case Msg.ReachReq(r) => gameController ! Reach(r.gameId, r.userId, r.toDiscard)
-        case Msg.TsumoReq(t) => gameController ! Tsumo(t.gameId, t.userId)
-        case Msg.DiscardReq(d) => gameController ! Discard(d.gameId, d.userId, d.toDiscard)
+        case Msg.ReachReq(r) => gameCenter ! Reach(r.gameId, r.userId, r.toDiscard)
+        case Msg.TsumoReq(t) => gameCenter ! Tsumo(t.gameId, t.userId)
+        case Msg.DiscardReq(d) => gameCenter ! Discard(d.gameId, d.userId, d.toDiscard)
         case _ =>
       }
     case Clean =>
