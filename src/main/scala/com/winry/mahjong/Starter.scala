@@ -1,5 +1,7 @@
 package com.winry.mahjong
 
+import java.net.InetAddress
+
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.config.ConfigFactory
 import com.winry.mahjong.actor.{Lobby, Server}
@@ -32,5 +34,5 @@ object Starter extends App {
   val connectString = zkConfig.getString("host-port")
   val path = zkConfig.getString("path")
   val zk = new ZooKeeper(connectString, 3000, new ZookeeperWatcher)
-  zk.create(path, (host + ":" + port).getBytes("utf-8"), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL)
+  zk.create(path, (InetAddress.getLocalHost + ":" + port).getBytes("utf-8"), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL)
 }
