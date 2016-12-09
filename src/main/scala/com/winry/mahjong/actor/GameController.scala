@@ -1,6 +1,7 @@
 package com.winry.mahjong.actor
 
 import akka.actor.{Actor, Props}
+import com.winry.mahjong.actor.GameCenter.Disconnect
 import com.winry.mahjong.actor.GameController.Reach
 import com.winry.mahjong.message.ReachResp
 import com.winry.mahjong.{Game, Session}
@@ -15,6 +16,8 @@ class GameController(val sessions: List[Session], val game: Game) extends Actor 
       game.reach(userId, toDiscard)
       //todo set resp fields
       sessions.foreach(_.send(ReachResp))
+    //todo set player offline
+    case Disconnect(session) =>
     case _ =>
   }
 }

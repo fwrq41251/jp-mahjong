@@ -8,7 +8,6 @@ import com.winry.mahjong.service.UserService
 import com.winry.mahjong.{Session, User}
 
 import scala.collection.mutable
-import scala.collection.mutable.ListBuffer
 
 /**
   * Created by User on 11/25/2016.
@@ -16,14 +15,19 @@ import scala.collection.mutable.ListBuffer
 class Lobby extends Actor {
 
   val sessionMap: mutable.Map[Session, User] = mutable.Map.empty
-  val readyUsers: ListBuffer[Session] = ListBuffer.empty
+  val readyUsers: mutable.Set[Session] = mutable.Set.empty
   val gameController: ActorSelection = context.actorSelection("akka://server/user/game")
 
   override def receive: Receive = {
     case Login(session, loginReq) => login(session, loginReq)
     case Ready(session) => handleReady(session)
-    case Logout(session) =>sessionMap -= session
+    case Logout(session) => handleLogout(session)
     case _ => throw new IllegalArgumentException("unknown message for lobby!")
+  }
+
+  private def handleLogout(session: Session) = {
+    sessionMap -= session
+    readyUsers -= session
   }
 
   private def login(session: Session, loginReq: LoginReq): Unit = {
@@ -51,4 +55,5 @@ object Lobby {
   case class Login(session: Session, loginReq: LoginReq)
 
   case class Logout(session: Session)
+
 }

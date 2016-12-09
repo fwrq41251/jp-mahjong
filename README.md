@@ -1,7 +1,5 @@
 # jp-mahjong
-play with japanese mahjong and scala.
+a jp-mahjong tcp server.
 ---
-###todo
-more yaku
-load balance
-log handler time 
+###TODO
+log handler time
