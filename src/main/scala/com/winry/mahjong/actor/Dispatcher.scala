@@ -23,9 +23,9 @@ class Dispatcher(val session: Session) extends Actor with ActorLogging {
       packetMessage.msg match {
         case Msg.LoginReq(l) => lobby ! Login(session, l)
         case Msg.ReadyReq(_) => lobby ! Ready(session)
-        case Msg.ReachReq(r) => gameCenter ! Reach(r.gameId, r.userId, r.toDiscard)
-        case Msg.TsumoReq(t) => gameCenter ! Tsumo(t.gameId, t.userId)
-        case Msg.DiscardReq(d) => gameCenter ! Discard(d.gameId, d.userId, d.toDiscard)
+        case Msg.ReachReq(r) => gameCenter ! Reach(session.gameId, session.userId, r.toDiscard)
+        case Msg.TsumoReq(t) => gameCenter ! Tsumo(session.gameId, session.userId)
+        case Msg.DiscardReq(d) => gameCenter ! Discard(session.gameId, session.userId, d.toDiscard)
         case _ =>
       }
     case PeerClosed =>

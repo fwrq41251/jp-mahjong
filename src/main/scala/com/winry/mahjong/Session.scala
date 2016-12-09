@@ -9,6 +9,8 @@ class Session(val id: Long, val client: ActorRef) {
 
   var userId = 0L
 
+  var gameId = 0L
+
   def send(message: Any): Unit = {
     client ! message
   }

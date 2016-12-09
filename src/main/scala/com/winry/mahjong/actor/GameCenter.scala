@@ -25,11 +25,12 @@ class GameCenter extends Actor {
       val game = new Game(users)
       val gameController = context.actorOf(GameController.props(sessions, game))
       gameControllerMap += currentGameId -> gameController
-      currentGameId += 1
       sessions.foreach(s => {
         sessionMap += s -> gameController
         s.send(GameStartResp)
+        s.gameId = currentGameId
       })
+      currentGameId += 1
     case gameCommand: GameCommand =>
       val gameController = gameControllerMap(gameCommand.gameId)
       gameController ! gameCommand
