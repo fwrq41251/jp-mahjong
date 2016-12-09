@@ -13,5 +13,6 @@ libraryDependencies ++= Seq(
   "org.apache.zookeeper" % "zookeeper" % "3.4.9" exclude("org.slf4j", "slf4j-log4j12"),
   "com.google.guava" % "guava" % "20.0",
   "redis.clients" % "jedis" % "2.9.0",
+  "com.jsuereth" % "scala-arm_2.11" % "2.0",
   "junit" % "junit" % "4.12" % Test
 )

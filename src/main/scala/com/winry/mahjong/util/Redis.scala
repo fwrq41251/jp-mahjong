@@ -1,18 +1,18 @@
 package com.winry.mahjong.util
 
-import redis.clients.jedis.Jedis
+import redis.clients.jedis.{Jedis, JedisPool}
 
 /**
   * Created by User on 12/9/2016.
   */
 object Redis {
 
-  val client: Jedis = {
+  val pool: JedisPool = {
     val config = ConfigUtil.getRedisConfig
-    new Jedis(config.host, config.port)
+    new JedisPool(config.host, config.port)
   }
 
-  def setSessionCount(count: Int): Unit = {
-    client.set("server:" + ServerRegister.hostPort, count.toString)
+  def getResource: Jedis = {
+    pool.getResource
   }
 }
