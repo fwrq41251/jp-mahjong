@@ -5,6 +5,7 @@ import com.winry.mahjong.actor.GameCenter.StartGame
 import com.winry.mahjong.actor.Lobby.{Login, Logout, Ready}
 import com.winry.mahjong.message.{LoginReq, LoginResp}
 import com.winry.mahjong.service.UserService
+import com.winry.mahjong.util.Redis
 import com.winry.mahjong.{Session, User}
 
 import scala.collection.mutable
@@ -28,6 +29,7 @@ class Lobby extends Actor {
   private def handleLogout(session: Session) = {
     sessionMap -= session
     readyUsers -= session
+    Redis.setSessionCount(sessionMap.size)
   }
 
   private def login(session: Session, loginReq: LoginReq): Unit = {
@@ -35,6 +37,7 @@ class Lobby extends Actor {
     sessionMap += session -> user
     session.userId = user.id
     session.send(LoginResp(session.id))
+    Redis.setSessionCount(sessionMap.size)
   }
 
   private def handleReady(session: Session): Unit = {

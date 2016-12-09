@@ -3,7 +3,7 @@ package com.winry
 import com.winry.mahjong.Types.Pin
 import com.winry.mahjong._
 import com.winry.mahjong.counter.PointCounter
-import com.winry.mahjong.util.HandsReader
+import com.winry.mahjong.util.{HandsReader, Redis}
 import com.winry.mahjong.yaku.MyChecker
 import org.junit.{Assert, Test}
 
@@ -43,4 +43,13 @@ class HandsTest {
     Assert.assertEquals(PointCounter.caculatePoint(30, 1, isOya = true), 1500)
   }
 
+  @Test
+  def redisTest(): Unit = {
+    Redis.client.set("server:10.122.82.217:8888", "3")
+  }
+
+  @Test
+  def redisTest2(): Unit = {
+    println(Redis.client.get("server:10.122.82.217:8888"))
+  }
 }
