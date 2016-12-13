@@ -1,7 +1,7 @@
 package com.winry.mahjong.actor
 
 import akka.actor.{Actor, ActorRef}
-import com.winry.mahjong.actor.GameCenter.{Disconnect, StartGame}
+import com.winry.mahjong.actor.GameCenter.{Disconnect, Reconnect, StartGame}
 import com.winry.mahjong.actor.GameController.GameCommand
 import com.winry.mahjong.message.GameStartResp
 import com.winry.mahjong.{Game, Session, User}
@@ -19,6 +19,7 @@ class GameCenter extends Actor {
     */
   val gameControllerMap: mutable.Map[Long, ActorRef] = mutable.Map.empty
   val sessionMap: mutable.Map[Session, ActorRef] = mutable.Map.empty
+  val droppedSessionMap: mutable.Map[Long, ActorRef] = mutable.Map.empty
 
   override def receive: Receive = {
     case StartGame(sessions, users) =>
@@ -34,7 +35,18 @@ class GameCenter extends Actor {
     case gameCommand: GameCommand =>
       val gameController = gameControllerMap(gameCommand.gameId)
       gameController ! gameCommand
-    case Disconnect(session) => sessionMap(session) ! Disconnect
+    case Disconnect(session) =>
+      sessionMap.get(session).foreach(c => {
+        droppedSessionMap += session.userId -> c
+        sessionMap -= session
+        c ! Disconnect
+      })
+    case Reconnect(session) =>
+      droppedSessionMap.get(session.userId).foreach(c => {
+        droppedSessionMap -= session.userId
+        sessionMap += session -> c
+        c ! Reconnect(session)
+      })
     case _ =>
 
   }
@@ -45,6 +57,8 @@ object GameCenter {
   case class StartGame(sessions: List[Session], users: List[User])
 
   case class Disconnect(session: Session)
+
+  case class Reconnect(session: Session)
 
 }
 

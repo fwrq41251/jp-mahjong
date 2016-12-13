@@ -74,10 +74,10 @@ class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecke
     */
   def isRyanmen: Boolean = {
     win.num match {
-      case it if 1 to 3 contains it => hands.chis.contains(new Chi(win))
-      case it if 4 to 6 contains it => hands.chis.contains(new Chi(win)) || hands.chis.contains(new Chi(win
+      case it if 1 to 3 contains it => chis.contains(new Chi(win))
+      case it if 4 to 6 contains it => chis.contains(new Chi(win)) || chis.contains(new Chi(win
         .typ, it - 2))
-      case _ => hands.chis.contains(new Chi(win.typ, win.num - 2))
+      case _ => chis.contains(new Chi(win.typ, win.num - 2))
     }
   }
 

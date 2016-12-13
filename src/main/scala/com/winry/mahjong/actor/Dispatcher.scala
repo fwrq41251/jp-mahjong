@@ -3,6 +3,7 @@ package com.winry.mahjong.actor
 import akka.actor.{Actor, ActorLogging, ActorSelection, Props}
 import akka.io.Tcp.{PeerClosed, Received}
 import com.winry.mahjong.Session
+import com.winry.mahjong.actor.GameCenter.Disconnect
 import com.winry.mahjong.actor.GameController.{Discard, Reach, Tsumo}
 import com.winry.mahjong.actor.Lobby.{Login, Logout, Ready}
 import com.winry.mahjong.message.PacketMSG
@@ -31,6 +32,7 @@ class Dispatcher(val session: Session) extends Actor with ActorLogging {
     case PeerClosed =>
       log.debug("client disconnected")
       lobby ! Logout(session)
+      gameCenter ! Disconnect(session)
       context stop self
   }
 
