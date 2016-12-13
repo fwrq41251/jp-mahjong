@@ -34,8 +34,8 @@ class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecke
   }
 
   hands.push(win)
-  //fixme temp variable, how to release this reference?
-  private val toCount: List[CountMahjong] = hands.freeMahjongs.toList.map(new CountMahjong(_))
+
+  val toCount: List[CountMahjong] = hands.freeMahjongs.toList.map(new CountMahjong(_))
 
   val eyes: List[Eye] = {
     if (toCount.size == 14) {
@@ -75,8 +75,7 @@ class WinHands(hands: Hands, val win: Mahjong) extends ChiChecker with PonChecke
   def isRyanmen: Boolean = {
     win.num match {
       case it if 1 to 3 contains it => chis.contains(new Chi(win))
-      case it if 4 to 6 contains it => chis.contains(new Chi(win)) || chis.contains(new Chi(win
-        .typ, it - 2))
+      case it if 4 to 6 contains it => chis.contains(new Chi(win)) || chis.contains(new Chi(win.typ, it - 2))
       case _ => chis.contains(new Chi(win.typ, win.num - 2))
     }
   }

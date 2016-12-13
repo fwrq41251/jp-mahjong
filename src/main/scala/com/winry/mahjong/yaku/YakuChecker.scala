@@ -2,6 +2,7 @@ package com.winry.mahjong.yaku
 
 import com.winry.mahjong.Types.Word
 import com.winry.mahjong.checker.{ChiChecker, PonChecker}
+import com.winry.mahjong.counter.CountMahjong
 import com.winry.mahjong.melds.{Chi, Eye, Pon}
 import com.winry.mahjong.{Game, Mahjong, Types, WinHands}
 
@@ -300,7 +301,7 @@ class ShousangenChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
 
 class HoniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override def value: Int = ???
+  override def value: Int = if (hands.isClosed) 3 else 2
 
   override val next: Option[YakuChecker] = ???
 
@@ -320,7 +321,7 @@ class HoniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, ga
 
 class ChiniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override def value: Int = ???
+  override def value: Int = if (hands.isClosed) 6 else 5
 
   override val next: Option[YakuChecker] = ???
 
@@ -335,4 +336,117 @@ class ChiniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
   }
 
   override def name: String = "清一色"
+}
+
+class SuuankouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    hands.isClosed && hands.pons.size == 4 && !hands.isTanki
+  }
+
+  override def name: String = "四暗刻"
+
+  override def value: Int = 13
+}
+
+class DaisangenChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    hands.pons.contains(new Pon(Types.Word, 5)) && hands.pons.contains(new Pon(Types.Word, 6)) &&
+      hands.pons.contains(new Pon(Types.Word, 7))
+  }
+
+  override def name: String = "大三元"
+
+  override def value: Int = 13
+}
+
+class ShousuushiiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    val suushii = List(Mahjong(Types.Word, 1), Mahjong(Types.Word, 2), Mahjong(Types.Word, 3), Mahjong(Types.Word, 4))
+    val shousuushii = for (m <- suushii) yield {
+      suushii.filter(s => !(s == m)).map(new Pon(_)) -> m
+    }
+    shousuushii.exists(s => hands.pons.containsSlice(s._1) && hands.eye == new Eye(s._2))
+  }
+
+  override def name: String = "小四喜"
+
+  override def value: Int = 13
+}
+
+class DaisuushiiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    val suushii = List(new Pon(Types.Word, 1), new Pon(Types.Word, 2), new Pon(Types.Word, 3), new Pon(Types.Word, 4))
+    hands.pons.containsSlice(suushii)
+  }
+
+  override def name: String = "大四喜"
+
+  override def value: Int = 14
+}
+
+class TsuuiisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    hands.pons.size == 4 && hands.pons.forall(_.typ == Types.Word) && hands.eye.typ == Types.Word
+  }
+
+  override def name: String = "字一色"
+
+  override def value: Int = 14
+}
+
+class DaichiseiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    hands.isChītoitsu && hands.eyes.forall(_.typ == Types.Word)
+  }
+
+  override def name: String = "大七星"
+
+  override def value: Int = 14
+}
+
+class ChinroutouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = {
+    if (hands.isChītoitsu) {
+      hands.eyes.forall(_.isTaiYao)
+    } else {
+      hands.pons.size == 4 && hands.pons.forall(_.isTaiYao) && hands.eye.isTaiYao
+    }
+  }
+
+  override def name: String = "清老头"
+
+  override def value: Int = 14
+}
+
+class ChuurenpoutouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
+
+  override val next: Option[YakuChecker] = _
+
+  override def satisfy(): Boolean = !hands.isChītoitsu && hands.toCount.groupBy(_.typ).size == 1 && (1 to 9).forall(i
+  => hands.toCount.contains(new CountMahjong(Mahjong(hands.toCount.head.typ, i))))
+
+  override def name: String = "九莲宝灯"
+
+  override def value: Int = 14
 }
