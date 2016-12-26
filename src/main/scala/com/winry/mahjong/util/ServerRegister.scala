@@ -10,7 +10,7 @@ import org.apache.zookeeper.{CreateMode, WatchedEvent, Watcher, ZooKeeper}
   */
 object ServerRegister {
 
-  var hostPort = ""
+  val hostPort = InetAddress.getLocalHost.getHostAddress
 
   def register(port: Int): Unit = {
     class ZookeeperWatcher extends Watcher {
@@ -28,8 +28,7 @@ object ServerRegister {
         case null => zk.create(path, null, Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT)
         case _ =>
       }
-      hostPort = InetAddress.getLocalHost.getHostAddress + ":" + port
-      zk.create(path + "/" + "server", hostPort.getBytes("utf-8"), Ids
+      zk.create(path + "/" + "server", (hostPort + ":" + port).getBytes("utf-8"), Ids
         .OPEN_ACL_UNSAFE,
         CreateMode.EPHEMERAL_SEQUENTIAL)
     }

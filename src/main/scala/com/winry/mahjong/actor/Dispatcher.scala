@@ -19,8 +19,8 @@ class Dispatcher(val session: Session) extends Actor with ActorLogging {
 
   override def receive: Receive = {
     case Received(data) =>
-      log.debug("receive:" + data)
-      val packetMessage = PacketMSG.parseFrom(data.toArray)
+      log.debug("receive:" + data.utf8String)
+      val packetMessage = PacketMSG.parseFrom(data.toArray.tail)
       packetMessage.msg match {
         case Msg.LoginReq(l) => lobby ! Login(session, l)
         case Msg.ReadyReq(_) => lobby ! Ready(session)

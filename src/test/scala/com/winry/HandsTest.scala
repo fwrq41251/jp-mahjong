@@ -3,6 +3,7 @@ package com.winry
 import com.winry.mahjong.Types.Pin
 import com.winry.mahjong._
 import com.winry.mahjong.counter.PointCounter
+import com.winry.mahjong.message.LoginReq
 import com.winry.mahjong.util.HandsReader
 import com.winry.mahjong.yaku.MyChecker
 import org.junit.{Assert, Test}
@@ -43,4 +44,11 @@ class HandsTest {
     Assert.assertEquals(PointCounter.caculatePoint(30, 1, isOya = true), 1500)
   }
 
+  @Test
+  def scalaPBTest(): Unit = {
+    val loginReq = LoginReq("winry")
+    val raw = loginReq.toByteArray
+    val parsed = LoginReq.parseFrom(raw)
+    println(parsed)
+  }
 }

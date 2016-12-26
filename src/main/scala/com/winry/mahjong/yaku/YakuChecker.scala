@@ -340,7 +340,7 @@ class ChiniisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
 
 class SuuankouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     hands.isClosed && hands.pons.size == 4 && !hands.isTanki
@@ -353,7 +353,7 @@ class SuuankouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, ga
 
 class DaisangenChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     hands.pons.contains(new Pon(Types.Word, 5)) && hands.pons.contains(new Pon(Types.Word, 6)) &&
@@ -367,7 +367,7 @@ class DaisangenChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
 
 class ShousuushiiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     val suushii = List(Mahjong(Types.Word, 1), Mahjong(Types.Word, 2), Mahjong(Types.Word, 3), Mahjong(Types.Word, 4))
@@ -384,7 +384,7 @@ class ShousuushiiChecker(hands: WinHands, game: Game) extends YakuChecker(hands,
 
 class DaisuushiiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     val suushii = List(new Pon(Types.Word, 1), new Pon(Types.Word, 2), new Pon(Types.Word, 3), new Pon(Types.Word, 4))
@@ -398,7 +398,7 @@ class DaisuushiiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
 
 class TsuuiisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     hands.pons.size == 4 && hands.pons.forall(_.typ == Types.Word) && hands.eye.typ == Types.Word
@@ -411,7 +411,7 @@ class TsuuiisouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
 
 class DaichiseiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     hands.isChītoitsu && hands.eyes.forall(_.typ == Types.Word)
@@ -424,7 +424,7 @@ class DaichiseiChecker(hands: WinHands, game: Game) extends YakuChecker(hands, g
 
 class ChinroutouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = {
     if (hands.isChītoitsu) {
@@ -441,7 +441,7 @@ class ChinroutouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, 
 
 class ChuurenpoutouChecker(hands: WinHands, game: Game) extends YakuChecker(hands, game) {
 
-  override val next: Option[YakuChecker] = _
+  override val next: Option[YakuChecker] = ???
 
   override def satisfy(): Boolean = !hands.isChītoitsu && hands.toCount.groupBy(_.typ).size == 1 && (1 to 9).forall(i
   => hands.toCount.contains(new CountMahjong(Mahjong(hands.toCount.head.typ, i))))
