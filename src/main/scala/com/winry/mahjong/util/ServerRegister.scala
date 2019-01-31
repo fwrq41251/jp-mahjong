@@ -10,7 +10,7 @@ import org.apache.zookeeper.{CreateMode, WatchedEvent, Watcher, ZooKeeper}
   */
 object ServerRegister {
 
-  val hostPort = InetAddress.getLocalHost.getHostAddress
+  val hostPort: String = InetAddress.getLocalHost.getHostAddress
 
   def register(port: Int): Unit = {
     class ZookeeperWatcher extends Watcher {

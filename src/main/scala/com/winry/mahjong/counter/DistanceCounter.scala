@@ -14,9 +14,9 @@ class DistanceCounter(hands: Hands) extends ChiChecker with PonChecker with Ride
 
   def countDistance: Int = {
     if (hands.isClosed) {
+      //fixme consider thirteen orphans
       Math.min(8 - (countChis + countPons) * 2 - hasEyes - countRides, 6 - countEyes)
-    }
-    else {
+    } else {
       8 - (hands.chis.size + hands.pons.size + hands.kans.size + countChis + countPons) * 2 - hasEyes
     }
   }
@@ -55,15 +55,10 @@ class DistanceCounter(hands: Hands) extends ChiChecker with PonChecker with Ride
   }
 
   def hasEyes: Int = {
-    var temp = countMahjongs.filter(!_.isCount)
-    while (temp.size >= 2) {
-      val toCount = temp.take(2)
-      if (isEye(toCount)) {
-        toCount.foreach(m => m.isCount = true)
-        return 1
-      } else {
-        temp = temp.tail
-      }
+    var unCount = countMahjongs.filter(!_.isCount)
+    while (unCount.size >= 2) {
+      if (isEye(unCount.take(2))) return 1
+      else unCount = unCount.tail
     }
     0
   }

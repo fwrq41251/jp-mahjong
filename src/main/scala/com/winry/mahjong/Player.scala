@@ -58,4 +58,8 @@ class Player(id: Long) {
     discard(toDiscard)
     hands.isReach = true
   }
+
+  def chi(toChi: Mahjong, index1: Int, index2: Int): Unit = {
+    hands.chi(toChi, index1, index2)
+  }
 }

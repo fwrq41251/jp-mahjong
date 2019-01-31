@@ -7,8 +7,6 @@ import com.winry.mahjong.Types.Type
   */
 class Mahjong(val typ: Type, val num: Int) extends Ordered[Mahjong] {
 
-  def apply(typ: Type, num: Int): Mahjong = new Mahjong(typ, num)
-
   def this(mahjong: Mahjong) = this(mahjong.typ, mahjong.num)
 
   def canEqual(other: Any): Boolean = other.isInstanceOf[Mahjong]

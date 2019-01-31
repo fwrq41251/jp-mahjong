@@ -74,4 +74,7 @@ class Hands(mahjongs: List[Mahjong]) {
     new DistanceCounter(this).countDistance
   }
 
+  def get(index:Int) = {
+    freeMahjongs(index)
+  }
 }

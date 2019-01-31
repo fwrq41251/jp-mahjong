@@ -17,7 +17,7 @@ class Yama {
   val mahjongs: List[Mahjong] = {
     var buffer = ListBuffer.empty[Mahjong]
 
-    def appendDigits(typ: Type) = {
+    def appendDigits(typ: Type): Unit = {
       for (i <- 1 to 9; _ <- 1 to 4) {
         buffer += new Mahjong(typ, i)
       }

@@ -9,6 +9,10 @@ import scala.util.Random
   */
 class Game(users: List[User]) {
 
+  object WaitingStatus extends Enumeration {
+    val CHI, PON, KAN = Value
+  }
+
   /**
     * 牌山
     */
@@ -51,24 +55,21 @@ class Game(users: List[User]) {
     */
   var kaze: Int = 1
 
-  def newKyoku(renchan: Boolean): Unit = {
+  var turn: Int = 0
+
+  var waitingMap: mutable.Map[Long, List[WaitingStatus.Value]] = mutable.Map.empty
+
+  def newKyoku(): Unit = {
     this.renchan = renchan
     yama = new Yama()
     players.foreach(p => {
       val mahjongs = for (_ <- 1 to 13) yield yama.take()
       p.init(new Hands(mahjongs.toList))
     })
+    kyoku += 1
+    if (kyoku % 4 == 1) kaze += 1
     val oya = players.head
     oya.deal(yama.take())
-    if (renchan) {
-      honba += 1
-    } else {
-      honba = 0
-      kyoku += 1
-      if (kyoku % 4 == 1) kaze += 1
-      players -= oya
-      players += oya
-    }
   }
 
   def reach(userId: Long, toDiscard: Int): Unit = {
@@ -77,4 +78,43 @@ class Game(users: List[User]) {
     reachbou += 1
   }
 
+  def tsumo(userId: Long) = {
+    val player = playerMap(userId)
+  }
+
+  def discard(userId: Long, toDiscard: Int): Unit = {
+    val player = playerMap(userId)
+    player.discard(toDiscard)
+    val mahjong = player.hands.get(toDiscard)
+    for (p <- players.filterNot(_.userId != userId)) {
+      val waitingStatus = waitingMap.getOrElse(p.userId, List())
+      if (p.hands.canKan(mahjong)) {
+        waitingMap += p.userId -> (WaitingStatus.KAN :: waitingStatus)
+      }
+      if (p.hands.canPon(mahjong)) {
+        waitingMap += p.userId -> (WaitingStatus.PON :: waitingStatus)
+      }
+      if (p.hands.canChi(mahjong)) {
+        waitingMap += p.userId -> (WaitingStatus.CHI :: waitingStatus)
+      }
+    }
+    if (waitingMap.isEmpty) {
+      players(turn).deal(yama.take())
+      turn += 1
+    }
+  }
+
+  def chi(userId: Long, toChi: Mahjong, index1: Int, index2: Int): Unit = {
+    val player = playerMap(userId)
+    player.chi(toChi, index1, index2)
+    turn += 1
+  }
+
+  private def kyokuOwari(): Unit = {
+
+  }
+
+  private def pass(userId: Long) = {
+
+  }
 }

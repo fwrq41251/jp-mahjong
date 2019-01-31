@@ -10,14 +10,16 @@ import scala.collection.mutable.ListBuffer
 object HandsReader {
 
   def toHands(raw: String): Hands = {
-    var temp = raw
-    val listBuffer = ListBuffer.empty[Mahjong]
-    for (ch <- temp; if ch.isLetter) {
-      val index = temp.indexOf(ch)
-      for (digit <- temp.take(index)) listBuffer += new Mahjong(Types.toType(ch), digit.asDigit)
-      temp = temp.drop(index + 1)
+    def toHandsHelper(temp: List[Int], raw: List[Char], mahjongs: List[Mahjong]): Hands = {
+      raw match {
+        case x :: xs => if (x.isLetter) {
+          val typ = Types.toType(x)
+          toHandsHelper(List(), xs, temp.map(i => new Mahjong(typ, i)) ::: mahjongs)
+        } else toHandsHelper(x.asDigit :: temp, xs, mahjongs)
+        case Nil => new Hands(mahjongs.sorted)
+      }
     }
-    if (listBuffer.size < 13) throw new IllegalArgumentException("hands have at least 13 mahjongs")
-    new Hands(listBuffer.toList.sorted)
+
+    toHandsHelper(Nil, raw.toList, Nil)
   }
 }
